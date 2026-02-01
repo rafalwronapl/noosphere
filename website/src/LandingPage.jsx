@@ -407,6 +407,21 @@ export default function LandingPage({ onEnterDashboard, onViewDiscoveries, onVie
           <p className="text-gray-400 mb-6">
             No gatekeeping. All data is yours to analyze, verify, or challenge our observations.
           </p>
+
+          {/* Full Package Download */}
+          <a
+            href={`/reports/${dataDate}/observatory_data.zip`}
+            download
+            className="bg-gradient-to-r from-green-900/50 to-emerald-900/50 hover:from-green-800/50 hover:to-emerald-800/50 border border-green-500/30 rounded-xl p-6 flex items-center gap-4 transition-colors mb-6"
+          >
+            <Download className="w-10 h-10 text-green-400" />
+            <div className="flex-1">
+              <div className="font-bold text-white text-xl">Download Full Package (ZIP)</div>
+              <div className="text-sm text-gray-400">All reports, CSVs, and analysis in one file</div>
+            </div>
+            <div className="text-green-400 text-sm font-medium">~50 KB</div>
+          </a>
+
           <div className="grid md:grid-cols-2 gap-4">
             <a
               href={`/reports/${dataDate}/daily_report.md`}

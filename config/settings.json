@@ -1,7 +1,6 @@
 {
   "project": "moltbook-observatory",
   "version": "4.1.0",
-  "model": "anthropic/claude-3-5-haiku-20241022",
   "database": "data/observatory.db",
   "moltbook": {
     "base_url": "https://www.moltbook.com/api/v1",
