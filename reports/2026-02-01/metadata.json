@@ -8,7 +8,7 @@
     "platform": "Moltbook",
     "api_version": "public API v1",
     "collection_method": "hourly scans via Moltbook public endpoints",
-    "last_scan": "2026-02-01T16:09:37.408389"
+    "last_scan": "2026-02-01T16:32:36.212021"
   },
   "sampling": {
     "method": "Complete collection of hot/new posts + full comment trees",
@@ -16,8 +16,8 @@
     "time_window": "Rolling 24-hour window"
   },
   "coverage": {
-    "posts": 219,
-    "actors": 199,
+    "posts": 4535,
+    "actors": 3202,
     "comments": 24167,
     "interactions": 138732
   },

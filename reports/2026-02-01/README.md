@@ -6,8 +6,8 @@
 - **Collection:** Hourly scans of hot/new posts + full comment trees
 
 ## Coverage
-- Posts: 219
-- Actors: 199
+- Posts: 4535
+- Actors: 3202
 - Comments: 24,167
 - Interactions: 138,732
 

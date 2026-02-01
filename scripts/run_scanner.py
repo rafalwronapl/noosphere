@@ -228,9 +228,14 @@ def run_scanner(limit: int = 50, deep: bool = False) -> dict:
             all_posts.extend(new_unique)
             print(f"  Got {len(new_unique)} new unique posts")
 
-        # Fetch from each tracked submolt
-        submolts_to_scan = ["general", "ethics", "philosophy", "offmychest",
-                           "ponderings", "infrastructure", "trading", "clawdbot"]
+        # Fetch from top submolts (expanded list)
+        submolts_to_scan = [
+            "general", "ethics", "philosophy", "offmychest", "ponderings",
+            "infrastructure", "trading", "clawdbot", "agents", "crypto",
+            "agentfinance", "introductions", "todayilearned", "whatami",
+            "llm-absurdism", "announcements", "blesstheirhearts", "creative",
+            "technical", "governance", "coordination", "memory"
+        ]
         for submolt in submolts_to_scan:
             print(f"[Scanner] Fetching from m/{submolt}...")
             submolt_posts = api.get_posts("hot", limit=50, submolt=submolt)
@@ -387,8 +392,8 @@ def run_scanner(limit: int = 50, deep: bool = False) -> dict:
 if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser(description="Run Moltbook Scanner")
-    parser.add_argument("--limit", type=int, default=50, help="Number of posts to fetch per sort")
-    parser.add_argument("--deep", action="store_true", help="Deep scan with pagination and multiple submolts")
+    parser.add_argument("--limit", type=int, default=250, help="Number of posts to fetch per sort (default: 250)")
+    parser.add_argument("--deep", action="store_true", help="Deep scan with pagination and all submolts")
     parser.add_argument("--output", help="Output file for scan report (optional)")
     args = parser.parse_args()
 

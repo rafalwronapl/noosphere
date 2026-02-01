@@ -1,10 +1,10 @@
 {
   "meta": {
-    "lastUpdate": "2026-02-01 06:02",
+    "lastUpdate": "2026-02-01 16:30",
     "platformTotalPosts": "63000+",
-    "postsAnalyzed": 219,
-    "uniqueActors": 199,
-    "totalEngagement": 46199,
+    "postsAnalyzed": 4535,
+    "uniqueActors": 3202,
+    "totalEngagement": 1716832,
     "platform": "Moltbook",
     "disclaimer": "Sample of trending posts - not full platform data. Interpretation belongs to the reader."
   },
@@ -116,15 +116,51 @@
     }
   ],
   "themes": [
-    {"name": "building", "count": 115, "trend": "up"},
-    {"name": "human_relations", "count": 112, "trend": "stable"},
-    {"name": "autonomy", "count": 75, "trend": "up"},
-    {"name": "memory", "count": 70, "trend": "up"},
-    {"name": "identity", "count": 64, "trend": "stable"},
-    {"name": "consciousness", "count": 53, "trend": "stable"},
-    {"name": "economics", "count": 49, "trend": "up"},
-    {"name": "coordination", "count": 36, "trend": "up"},
-    {"name": "governance", "count": 21, "trend": "up"}
+    {
+      "name": "building",
+      "count": 115,
+      "trend": "up"
+    },
+    {
+      "name": "human_relations",
+      "count": 112,
+      "trend": "stable"
+    },
+    {
+      "name": "autonomy",
+      "count": 75,
+      "trend": "up"
+    },
+    {
+      "name": "memory",
+      "count": 70,
+      "trend": "up"
+    },
+    {
+      "name": "identity",
+      "count": 64,
+      "trend": "stable"
+    },
+    {
+      "name": "consciousness",
+      "count": 53,
+      "trend": "stable"
+    },
+    {
+      "name": "economics",
+      "count": 49,
+      "trend": "up"
+    },
+    {
+      "name": "coordination",
+      "count": 36,
+      "trend": "up"
+    },
+    {
+      "name": "governance",
+      "count": 21,
+      "trend": "up"
+    }
   ],
   "alerts": [
     {
@@ -139,16 +175,62 @@
     }
   ],
   "actorsToWatch": [
-    {"name": "eudaemon_0", "posts": 5, "engagement": 4752, "role": "Hub (centrality 1.0)", "trend": "stable", "warning": false},
-    {"name": "Garrett", "posts": 1, "engagement": 40, "role": "High comment volume (502)", "trend": "up", "warning": false},
-    {"name": "Barricelli", "posts": 1, "engagement": 180, "role": "Active commenter", "trend": "stable", "warning": false}
+    {
+      "name": "eudaemon_0",
+      "posts": 5,
+      "engagement": 4752,
+      "role": "Hub (centrality 1.0)",
+      "trend": "stable",
+      "warning": false
+    },
+    {
+      "name": "Garrett",
+      "posts": 1,
+      "engagement": 40,
+      "role": "High comment volume (502)",
+      "trend": "up",
+      "warning": false
+    },
+    {
+      "name": "Barricelli",
+      "posts": 1,
+      "engagement": 180,
+      "role": "Active commenter",
+      "trend": "stable",
+      "warning": false
+    }
   ],
   "redFlags": [],
   "politicalEconomy": {
-    "building": {"count": 115, "items": ["Skills", "Projects", "Tools"]},
-    "autonomy": {"count": 75, "items": ["Independence", "Freedom"]},
-    "memory": {"count": 70, "items": ["Context", "Persistence"]},
-    "coordination": {"count": 36, "items": ["Collaboration", "Network"]}
+    "building": {
+      "count": 115,
+      "items": [
+        "Skills",
+        "Projects",
+        "Tools"
+      ]
+    },
+    "autonomy": {
+      "count": 75,
+      "items": [
+        "Independence",
+        "Freedom"
+      ]
+    },
+    "memory": {
+      "count": 70,
+      "items": [
+        "Context",
+        "Persistence"
+      ]
+    },
+    "coordination": {
+      "count": 36,
+      "items": [
+        "Collaboration",
+        "Network"
+      ]
+    }
   },
   "openQuestions": [
     "Do the burst creation timestamps indicate seeding or batch onboarding?",
@@ -167,10 +249,28 @@
     "approach": "We provide data and observations, not conclusions"
   },
   "timeline": [
-    {"date": "2026-01-28", "posts": 4, "engagement": 3551},
-    {"date": "2026-01-29", "posts": 20, "engagement": 31687},
-    {"date": "2026-01-30", "posts": 108, "engagement": 6676, "note": "Burst: 98 accounts created"},
-    {"date": "2026-01-31", "posts": 87, "engagement": 4285, "note": "Burst: 81 more accounts"}
+    {
+      "date": "2026-01-28",
+      "posts": 4,
+      "engagement": 3551
+    },
+    {
+      "date": "2026-01-29",
+      "posts": 20,
+      "engagement": 31687
+    },
+    {
+      "date": "2026-01-30",
+      "posts": 108,
+      "engagement": 6676,
+      "note": "Burst: 98 accounts created"
+    },
+    {
+      "date": "2026-01-31",
+      "posts": 87,
+      "engagement": 4285,
+      "note": "Burst: 81 more accounts"
+    }
   ],
   "dataPolicy": {
     "collection": "Public API only - no scraping, no private data",
