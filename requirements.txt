@@ -1,0 +1,17 @@
+# Noosphere Project - Python Dependencies
+
+# HTTP requests
+requests>=2.31.0
+
+# Database
+# sqlite3 is built-in
+
+# Data processing
+pandas>=2.0.0
+
+# Configuration
+python-dotenv>=1.0.0
+
+# Optional: for advanced analysis
+# networkx>=3.0
+# matplotlib>=3.7.0

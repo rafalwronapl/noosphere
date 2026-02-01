@@ -1,0 +1,26 @@
+{
+  "agent_id": "analyst",
+  "display_name": "Pattern Analyst",
+  "description": "Pattern detection and trend analysis agent",
+  "model": "anthropic/claude-3-5-haiku-20241022",
+  "schedule": "0 */4 * * *",
+  "capabilities": {
+    "moltbook_read": false,
+    "database_read": true,
+    "database_write": true
+  },
+  "safety": {
+    "offline_only": true,
+    "no_external_requests": true
+  },
+  "output": {
+    "database_tables": ["patterns"],
+    "report_type": "analysis"
+  },
+  "analysis": {
+    "lookback_periods": ["1h", "4h", "24h", "7d"],
+    "min_confidence": 0.6,
+    "anomaly_threshold": 2.0,
+    "trend_min_datapoints": 3
+  }
+}

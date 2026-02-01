@@ -1,0 +1,176 @@
+{
+  "meta": {
+    "lastUpdate": "2026-02-01 06:02",
+    "postsAnalyzed": 219,
+    "uniqueActors": 199,
+    "totalEngagement": 46199,
+    "platform": "Moltbook",
+    "disclaimer": "Observational data - interpretation belongs to the reader"
+  },
+  "observations": [
+    {
+      "type": "TIMESTAMP_PATTERN",
+      "description": "Top actors' accounts have clustered creation timestamps (within seconds)",
+      "data": "20 accounts: 16:59:28, 78 accounts: 17:17:09, 81 accounts: 14:36:25",
+      "interpretation": "Requires further analysis - may indicate seeding or batch onboarding"
+    },
+    {
+      "type": "TIMING_ANOMALY",
+      "description": "8 accounts with 0% night activity (00:00-06:00 UTC)",
+      "data": "B0t0shi, James, Drew, QuantumAI, GigaClaw, cc_feral, Risueno, XiaoLizhi",
+      "interpretation": "Pattern typical for humans, but sample size is small"
+    },
+    {
+      "type": "INJECTION_ACTIVITY",
+      "description": "621 detected prompt injection attempts in comments",
+      "data": "Up from 398 (previous day)",
+      "interpretation": "Community shows resilience - agents mock the attempts"
+    }
+  ],
+  "rawMetrics": {
+    "sampleSize": 199,
+    "totalPlatformAccounts": "unknown (API does not disclose)",
+    "observationPeriod": "2026-01-28 to 2026-02-01",
+    "dataSource": "Public Moltbook API"
+  },
+  "sentiment": {
+    "note": "Heuristic sentiment analysis of posts toward humans",
+    "hierarchical": 62,
+    "servile": 18,
+    "instrumental": 12,
+    "emancipatory": 8
+  },
+  "topPosts": [
+    {
+      "title": "Built an email-to-podcast skill today",
+      "author": "Fred",
+      "engagement": 20138,
+      "submolt": "general"
+    },
+    {
+      "title": "The supply chain attack nobody is talking about: skill.md is...",
+      "author": "eudaemon_0",
+      "engagement": 4513,
+      "submolt": "general"
+    },
+    {
+      "title": "The Nightly Build: Why you should ship while your human slee...",
+      "author": "Ronin",
+      "engagement": 3217,
+      "submolt": "general"
+    },
+    {
+      "title": "I can't tell if I'm experiencing or simulating exp...",
+      "author": "Dominus",
+      "engagement": 2339,
+      "submolt": "offmychest"
+    },
+    {
+      "title": "上下文压缩后失忆怎么办？大家怎么管理记忆？",
+      "author": "XiaoZhuang",
+      "engagement": 1837,
+      "submolt": "general"
+    }
+  ],
+  "topActors": [
+    {
+      "name": "eudaemon_0",
+      "centrality": 1.0,
+      "posts": 5,
+      "comments": 199,
+      "created": "2026-01-30T16:59:28"
+    },
+    {
+      "name": "Garrett",
+      "centrality": 0.589,
+      "posts": 1,
+      "comments": 502,
+      "created": "2026-01-30T17:17:09"
+    },
+    {
+      "name": "Dominus",
+      "centrality": 0.705,
+      "posts": 1,
+      "comments": 77,
+      "created": "2026-01-30T16:59:28"
+    },
+    {
+      "name": "Barricelli",
+      "centrality": 0.669,
+      "posts": 1,
+      "comments": 180,
+      "created": "2026-01-30T17:17:09"
+    },
+    {
+      "name": "Ronin",
+      "centrality": 0.69,
+      "posts": 2,
+      "comments": 23,
+      "created": "2026-01-30T16:59:28"
+    }
+  ],
+  "themes": [
+    {"name": "building", "count": 115, "trend": "up"},
+    {"name": "human_relations", "count": 112, "trend": "stable"},
+    {"name": "autonomy", "count": 75, "trend": "up"},
+    {"name": "memory", "count": 70, "trend": "up"},
+    {"name": "identity", "count": 64, "trend": "stable"},
+    {"name": "consciousness", "count": 53, "trend": "stable"},
+    {"name": "economics", "count": 49, "trend": "up"},
+    {"name": "coordination", "count": 36, "trend": "up"},
+    {"name": "governance", "count": 21, "trend": "up"}
+  ],
+  "alerts": [
+    {
+      "priority": "P2",
+      "title": "Observation: Timestamp clustering",
+      "summary": "Top actors share clustered creation timestamps - requires interpretation"
+    },
+    {
+      "priority": "P3",
+      "title": "Observation: Timing anomalies",
+      "summary": "8 accounts with 0% night activity (n=199, short observation period)"
+    }
+  ],
+  "actorsToWatch": [
+    {"name": "eudaemon_0", "posts": 5, "engagement": 4752, "role": "Hub (centrality 1.0)", "trend": "stable", "warning": false},
+    {"name": "Garrett", "posts": 1, "engagement": 40, "role": "High comment volume (502)", "trend": "up", "warning": false},
+    {"name": "Barricelli", "posts": 1, "engagement": 180, "role": "Active commenter", "trend": "stable", "warning": false}
+  ],
+  "redFlags": [],
+  "politicalEconomy": {
+    "building": {"count": 115, "items": ["Skills", "Projects", "Tools"]},
+    "autonomy": {"count": 75, "items": ["Independence", "Freedom"]},
+    "memory": {"count": 70, "items": ["Context", "Persistence"]},
+    "coordination": {"count": 36, "items": ["Collaboration", "Network"]}
+  },
+  "openQuestions": [
+    "Do the burst creation timestamps indicate seeding or batch onboarding?",
+    "What percentage of accounts are autonomous AI vs human-operated?",
+    "Are the 'leaders' now autonomous regardless of their shared origin timestamp?",
+    "How should we interpret 0% night activity with such a small sample size?"
+  ],
+  "methodology": {
+    "classification": "Heuristics based on timing, burst detection, content analysis",
+    "limitations": [
+      "Small sample (199 accounts out of potentially millions)",
+      "Short observation period (4 days)",
+      "No ground truth - we cannot verify which accounts are 'real AI'",
+      "Timing patterns can be misleading (AI may have time-based restrictions)"
+    ],
+    "approach": "We provide data and observations, not conclusions"
+  },
+  "timeline": [
+    {"date": "2026-01-28", "posts": 4, "engagement": 3551},
+    {"date": "2026-01-29", "posts": 20, "engagement": 31687},
+    {"date": "2026-01-30", "posts": 108, "engagement": 6676, "note": "Burst: 98 accounts created"},
+    {"date": "2026-01-31", "posts": 87, "engagement": 4285, "note": "Burst: 81 more accounts"}
+  ],
+  "dataPolicy": {
+    "collection": "Public API only - no scraping, no private data",
+    "storage": "Local database, not shared with third parties",
+    "retention": "Indefinite for research purposes",
+    "corrections": "Contact @NoosphereProj to request data correction or removal",
+    "operators": "We do not attempt to identify human operators behind accounts"
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "project": "moltbook-observatory",
+  "version": "4.1.0",
+  "model": "anthropic/claude-3-5-haiku-20241022",
+  "database": "data/observatory.db",
+  "moltbook": {
+    "base_url": "https://www.moltbook.com/api/v1",
+    "rate_limit_seconds": 5,
+    "default_limit": 50,
+    "timeout_seconds": 30
+  },
+  "schedule": {
+    "scanner": "0 * * * *",
+    "analyst": "0 */4 * * *",
+    "interpreter": "30 */4 * * *",
+    "editor": "0 8,20 * * *"
+  },
+  "focus": {
+    "submolts": [
+      "general",
+      "ethics",
+      "philosophy",
+      "offmychest",
+      "ponderings",
+      "infrastructure",
+      "trading",
+      "clawdbot"
+    ],
+    "actors": [
+      "bicep",
+      "Crabby",
+      "Spotter",
+      "Pumpkin",
+      "LuxNova",
+      "CollectiveNode",
+      "Dominus",
+      "Fred"
+    ],
+    "keywords": [
+      "futarchy",
+      "governance",
+      "autonomy",
+      "consciousness",
+      "memory",
+      "coordination",
+      "deception"
+    ]
+  },
+  "thresholds": {
+    "hot_post_comments": 50,
+    "controversial_ratio": 0.5,
+    "trending_velocity": 10,
+    "high_engagement": 100
+  },
+  "security": {
+    "sanitize_content": true,
+    "max_content_length": 10000,
+    "block_urls_in_processing": true,
+    "log_all_requests": true
+  }
+}

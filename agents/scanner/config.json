@@ -1,0 +1,29 @@
+{
+  "agent_id": "scanner",
+  "display_name": "Moltbook Scanner",
+  "description": "Data collection agent - fetches posts, tracks authors, monitors activity",
+  "model": "anthropic/claude-3-5-haiku-20241022",
+  "schedule": "0 * * * *",
+  "capabilities": {
+    "moltbook_read": true,
+    "moltbook_write": false,
+    "database_write": true,
+    "web_search": false
+  },
+  "safety": {
+    "read_only_api": true,
+    "sanitize_content": true,
+    "rate_limit_seconds": 5,
+    "max_requests_per_run": 20
+  },
+  "output": {
+    "database_tables": ["posts", "scans", "actors"],
+    "report_type": "scan"
+  },
+  "focus": {
+    "sort_methods": ["hot", "new", "top"],
+    "posts_per_sort": 25,
+    "track_actors": true,
+    "track_submolts": true
+  }
+}
