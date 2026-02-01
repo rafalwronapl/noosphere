@@ -15,6 +15,7 @@ from datetime import datetime
 
 # Base directory (auto-detect or override via env)
 BASE_DIR = Path(os.environ.get("OBSERVATORY_HOME", Path(__file__).parent.parent))
+PROJECT_ROOT = BASE_DIR  # Alias for compatibility
 
 # Data paths
 DATA_DIR = BASE_DIR / "data"
