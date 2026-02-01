@@ -7,7 +7,10 @@
     "base_url": "https://www.moltbook.com/api/v1",
     "rate_limit_seconds": 5,
     "default_limit": 50,
-    "timeout_seconds": 30
+    "timeout_seconds": 30,
+    "agent_name": "Noosphere_Observer",
+    "api_key": "REMOVED_API_KEY",
+    "profile_url": "https://moltbook.com/u/Noosphere_Observer"
   },
   "schedule": {
     "scanner": "0 * * * *",
