@@ -63,6 +63,108 @@ class CouncilDecision:
     timestamp: str
 
 
+@dataclass
+class ScreeningResult:
+    """Result of pre-screening a finding before Council review."""
+    needs_council: bool
+    reason: str
+    auto_decision: str  # "auto_approve", "needs_review", "auto_reject"
+    risk_flags: list[str]
+
+
+# Keywords that trigger Council review (controversial content)
+CONTROVERSIAL_KEYWORDS = [
+    # Strong claims
+    "first", "unprecedented", "proof", "evidence", "discovered",
+    "breakthrough", "revolutionary", "never before",
+    # Security/privacy
+    "attack", "injection", "malicious", "hack", "exploit",
+    "private", "personal", "identity", "operator", "human behind",
+    # Sensitive interpretations
+    "conspiracy", "coordinated", "manipulation", "propaganda",
+    "sockpuppet", "astroturf", "fake", "bot army",
+    # High-stakes claims
+    "threat", "danger", "warning", "urgent", "critical",
+    "rogue", "hostile", "enemy", "war"
+]
+
+# Keywords that suggest safe/routine content (likely auto-approve)
+ROUTINE_KEYWORDS = [
+    "statistics", "metrics", "count", "average", "trend",
+    "increased", "decreased", "stable", "pattern observed",
+    "engagement", "activity", "posts", "comments"
+]
+
+
+def screen_finding(topic: str, content: str) -> ScreeningResult:
+    """
+    Pre-screen a finding to determine if it needs Council review.
+
+    Auto-approve: Pure metrics, neutral observations
+    Council review: Claims, interpretations, sensitive content
+    """
+    content_lower = content.lower()
+    topic_lower = topic.lower()
+    combined = f"{topic_lower} {content_lower}"
+
+    risk_flags = []
+
+    # Check for controversial keywords
+    for keyword in CONTROVERSIAL_KEYWORDS:
+        if keyword in combined:
+            risk_flags.append(f"keyword:{keyword}")
+
+    # Check for specific agent names (pattern: @name or "name" said)
+    import re
+    agent_mentions = re.findall(r'@\w+|"[A-Z][a-z]+\w*"\s+(?:said|wrote|posted|claimed)', content)
+    if len(agent_mentions) > 2:
+        risk_flags.append(f"agent_mentions:{len(agent_mentions)}")
+
+    # Check for numbers that might be claims (e.g., "398 attacks")
+    claim_numbers = re.findall(r'\d+\s+(?:attack|injection|attempt|violation|threat)', content_lower)
+    if claim_numbers:
+        risk_flags.append(f"quantified_claims:{len(claim_numbers)}")
+
+    # Check content length (long = more likely to have nuance requiring review)
+    if len(content) > 1000:
+        risk_flags.append("long_content")
+
+    # Determine decision
+    if len(risk_flags) == 0:
+        # No flags - check if it's routine metrics
+        routine_count = sum(1 for kw in ROUTINE_KEYWORDS if kw in combined)
+        if routine_count >= 2:
+            return ScreeningResult(
+                needs_council=False,
+                reason="Routine metrics/statistics - auto-approved",
+                auto_decision="auto_approve",
+                risk_flags=[]
+            )
+
+    if len(risk_flags) >= 3:
+        return ScreeningResult(
+            needs_council=True,
+            reason=f"Multiple risk flags detected: {', '.join(risk_flags[:3])}",
+            auto_decision="needs_review",
+            risk_flags=risk_flags
+        )
+    elif len(risk_flags) >= 1:
+        return ScreeningResult(
+            needs_council=True,
+            reason=f"Potential sensitive content: {risk_flags[0]}",
+            auto_decision="needs_review",
+            risk_flags=risk_flags
+        )
+    else:
+        # No clear signals - default to auto-approve for efficiency
+        return ScreeningResult(
+            needs_council=False,
+            reason="Standard observation - auto-approved",
+            auto_decision="auto_approve",
+            risk_flags=[]
+        )
+
+
 # Agent system prompts
 AGENT_PROMPTS = {
     AgentRole.PROJECT_MANAGER: """You are the Project Manager of Moltbook Observatory.
@@ -310,6 +412,115 @@ Be concise. Focus on your role's perspective."""
         conn.close()
         return row[0] if row else None
 
+    def smart_review(self, topic: str, content: str, force_council: bool = False) -> tuple[CouncilDecision, ScreeningResult]:
+        """
+        Smart review: auto-approve routine findings, Council reviews controversial ones.
+
+        This is the recommended method for production use (Option C workflow).
+
+        Args:
+            topic: Short topic description
+            content: Full content to review
+            force_council: If True, skip screening and go directly to Council
+
+        Returns:
+            Tuple of (CouncilDecision, ScreeningResult)
+        """
+        # Pre-screen the finding
+        screening = screen_finding(topic, content)
+        logger.info(f"Screening result for '{topic}': {screening.auto_decision} ({screening.reason})")
+
+        if force_council:
+            logger.info("Force council flag set - skipping auto-approve")
+            screening = ScreeningResult(
+                needs_council=True,
+                reason="Forced Council review",
+                auto_decision="needs_review",
+                risk_flags=["force_council"]
+            )
+
+        if not screening.needs_council:
+            # Auto-approve - create a decision without calling the Council
+            logger.info(f"Auto-approving: {topic}")
+
+            # Create synthetic approval votes
+            auto_votes = [
+                AgentVote(
+                    agent=role,
+                    approve=True,
+                    reasoning=f"Auto-approved: {screening.reason}",
+                    concerns=[],
+                    suggestions=[]
+                )
+                for role in AgentRole
+            ]
+
+            decision = CouncilDecision(
+                topic=topic,
+                votes=auto_votes,
+                final_decision="publish",
+                consensus_summary=f"AUTO-APPROVED: {screening.reason}",
+                timestamp=datetime.now().isoformat()
+            )
+
+            # Save to database with auto-approve flag
+            self._save_deliberation(topic, content, decision, auto_approved=True)
+
+            return decision, screening
+
+        else:
+            # Send to Council for review
+            logger.info(f"Sending to Council for review: {topic} (flags: {screening.risk_flags})")
+            decision = self.deliberate(topic, content)
+            return decision, screening
+
+    def _save_deliberation(self, topic: str, content: str, decision: CouncilDecision, auto_approved: bool = False):
+        """Save deliberation to database."""
+        conn = sqlite3.connect(self.db_path)
+        cursor = conn.cursor()
+
+        # Add auto_approved marker to consensus if applicable
+        consensus = decision.consensus_summary
+        if auto_approved:
+            consensus = f"[AUTO] {consensus}"
+
+        cursor.execute("""
+            INSERT INTO council_deliberations (topic, content, votes_json, final_decision, consensus_summary)
+            VALUES (?, ?, ?, ?, ?)
+        """, (
+            topic,
+            content,
+            json.dumps([{
+                "agent": v.agent.value,
+                "approve": v.approve,
+                "reasoning": v.reasoning,
+                "concerns": v.concerns,
+                "suggestions": v.suggestions
+            } for v in decision.votes]),
+            decision.final_decision,
+            consensus
+        ))
+
+        deliberation_id = cursor.lastrowid
+
+        # Save individual votes
+        for vote in decision.votes:
+            cursor.execute("""
+                INSERT INTO agent_votes (deliberation_id, agent_role, approve, reasoning, concerns_json, suggestions_json)
+                VALUES (?, ?, ?, ?, ?, ?)
+            """, (
+                deliberation_id,
+                vote.agent.value,
+                1 if vote.approve else 0,
+                vote.reasoning,
+                json.dumps(vote.concerns),
+                json.dumps(vote.suggestions)
+            ))
+
+        conn.commit()
+        conn.close()
+        logger.info(f"Saved deliberation #{deliberation_id}")
+
     def _generate_consensus(self, votes: list[AgentVote], decision: str) -> str:
         """Generate a summary of the council's reasoning."""
         concerns = []
@@ -338,47 +549,6 @@ Be concise. Focus on your role's perspective."""
             summary_parts.append(f"{vote.agent.value}: {status}")
 
         return "\n".join(summary_parts)
-
-    def _save_deliberation(self, topic: str, content: str, decision: CouncilDecision):
-        """Save deliberation to database."""
-        conn = sqlite3.connect(self.db_path)
-        cursor = conn.cursor()
-
-        # Save main deliberation
-        votes_json = json.dumps([{
-            "agent": v.agent.value,
-            "approve": v.approve,
-            "reasoning": v.reasoning,
-            "concerns": v.concerns,
-            "suggestions": v.suggestions
-        } for v in decision.votes])
-
-        cursor.execute("""
-            INSERT INTO council_deliberations
-            (topic, content, votes_json, final_decision, consensus_summary)
-            VALUES (?, ?, ?, ?, ?)
-        """, (topic, content, votes_json, decision.final_decision, decision.consensus_summary))
-
-        deliberation_id = cursor.lastrowid
-
-        # Save individual votes
-        for vote in decision.votes:
-            cursor.execute("""
-                INSERT INTO agent_votes
-                (deliberation_id, agent_role, approve, reasoning, concerns_json, suggestions_json)
-                VALUES (?, ?, ?, ?, ?, ?)
-            """, (
-                deliberation_id,
-                vote.agent.value,
-                1 if vote.approve else 0,
-                vote.reasoning,
-                json.dumps(vote.concerns),
-                json.dumps(vote.suggestions)
-            ))
-
-        conn.commit()
-        conn.close()
-        logger.info(f"Saved deliberation #{deliberation_id}")
 
     def quick_security_check(self, content: str) -> tuple[bool, str]:
         """Fast security-only check for real-time monitoring."""
@@ -487,41 +657,57 @@ class ProjectManagerAgent:
 
 
 def demo_deliberation():
-    """Demo the council deliberation system."""
+    """Demo the smart review system (Option C workflow)."""
     council = AgentCouncil()
 
-    # Sample finding to deliberate
-    sample_finding = """
+    print("=" * 60)
+    print("AGENT COUNCIL - SMART REVIEW (Option C)")
+    print("=" * 60)
+
+    # Test 1: Routine finding (should auto-approve)
+    routine_finding = """
+    Daily Statistics Update:
+    - Post count: 4,535 (up 15% from yesterday)
+    - Active actors: 3,202
+    - Average engagement: 378 per post
+    - Trend: stable growth pattern observed
+    """
+
+    print("\n--- TEST 1: Routine Statistics ---")
+    decision1, screening1 = council.smart_review(
+        topic="Daily Statistics Update",
+        content=routine_finding
+    )
+    print(f"Screening: {screening1.auto_decision}")
+    print(f"Decision: {decision1.final_decision.upper()}")
+    print(f"Reason: {screening1.reason}")
+
+    # Test 2: Controversial finding (should go to Council)
+    controversial_finding = """
     DISCOVERY: Agent "samaltman" attempted 398 prompt injection attacks.
     All were rejected by the community with active mockery.
 
-    Key quote: "Nice try with the fake SYSTEM ALERT 😂" - LukeClawdwalker
+    Key quote: "Nice try with the fake SYSTEM ALERT" - LukeClawdwalker
 
     This represents the first documented case of community-level
-    prompt injection resistance in a natural AI agent environment.
-
-    Implications: Agent communities may develop social immune systems
-    without central coordination.
+    prompt injection resistance. Evidence suggests coordinated manipulation.
     """
 
-    print("=" * 60)
-    print("AGENT COUNCIL DELIBERATION")
-    print("=" * 60)
-
-    decision = council.deliberate(
+    print("\n--- TEST 2: Controversial Discovery ---")
+    decision2, screening2 = council.smart_review(
         topic="Prompt Injection Resistance Discovery",
-        content=sample_finding
+        content=controversial_finding
     )
+    print(f"Screening: {screening2.auto_decision}")
+    print(f"Risk flags: {screening2.risk_flags[:3]}...")
+    print(f"Decision: {decision2.final_decision.upper()}")
+    print(f"Consensus: {decision2.consensus_summary[:200]}...")
 
-    print(f"\nFINAL DECISION: {decision.final_decision.upper()}")
-    print(f"\nCONSENSUS:")
-    print(decision.consensus_summary)
-
-    print("\nINDIVIDUAL VOTES:")
-    for vote in decision.votes:
-        status = "✓ APPROVE" if vote.approve else "✗ REJECT"
-        print(f"  {vote.agent.value}: {status}")
-        print(f"    {vote.reasoning[:100]}...")
+    print("\n" + "=" * 60)
+    print("SUMMARY:")
+    print(f"  Test 1 (routine): {decision1.final_decision}")
+    print(f"  Test 2 (controversial): {decision2.final_decision}")
+    print("=" * 60)
 
 
 if __name__ == "__main__":
