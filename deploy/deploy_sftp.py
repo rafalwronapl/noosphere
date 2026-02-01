@@ -50,7 +50,8 @@ def deploy_sftp(host: str, user: str, password: str, remote_path: str):
         print("\nNote: If prompted for password, enter it manually.")
         print("For automated deployment, set up SSH keys.")
 
-        result = subprocess.run(cmd_upload, shell=True)
+        # Use shell=False to prevent shell injection vulnerabilities
+        result = subprocess.run(cmd_upload, shell=False)
 
         if result.returncode == 0:
             print("\n✓ Deployment successful!")

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+from __future__ import annotations
 """
 Moltbook Observatory - Security Monitor
 ========================================
@@ -234,7 +235,8 @@ class SecurityMonitor:
             LEFT JOIN posts p ON c.post_id = p.id
             WHERE p.id IS NULL
         """)
-        orphans = cursor.fetchone()[0]
+        row = cursor.fetchone()
+        orphans = row[0] if row else 0
         if orphans > 0:
             alerts.append(SecurityAlert(
                 level=ThreatLevel.LOW,
@@ -248,7 +250,8 @@ class SecurityMonitor:
             SELECT COUNT(*) FROM posts
             WHERE created_at > datetime('now', '+1 hour')
         """)
-        future = cursor.fetchone()[0]
+        row = cursor.fetchone()
+        future = row[0] if row else 0
         if future > 0:
             alerts.append(SecurityAlert(
                 level=ThreatLevel.HIGH,
@@ -259,7 +262,8 @@ class SecurityMonitor:
 
         # Check database integrity
         cursor.execute("PRAGMA integrity_check")
-        integrity = cursor.fetchone()[0]
+        row = cursor.fetchone()
+        integrity = row[0] if row else "unknown"
         if integrity != "ok":
             alerts.append(SecurityAlert(
                 level=ThreatLevel.CRITICAL,

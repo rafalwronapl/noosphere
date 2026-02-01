@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+from __future__ import annotations
 """
 Moltbook Observatory - Agent Council
 =====================================
@@ -424,7 +425,8 @@ class ProjectManagerAgent:
             conn = sqlite3.connect(self.council.db_path)
             cursor = conn.cursor()
             cursor.execute("SELECT COUNT(*) FROM posts")
-            post_count = cursor.fetchone()[0]
+            row = cursor.fetchone()
+            post_count = row[0] if row else 0
             conn.close()
             return {"ok": True, "message": f"{post_count} posts in database"}
         except Exception as e:
@@ -436,7 +438,8 @@ class ProjectManagerAgent:
             conn = sqlite3.connect(self.council.db_path)
             cursor = conn.cursor()
             cursor.execute("SELECT MAX(scraped_at) FROM posts")
-            latest = cursor.fetchone()[0]
+            row = cursor.fetchone()
+            latest = row[0] if row else None
             conn.close()
 
             if latest:
@@ -454,7 +457,8 @@ class ProjectManagerAgent:
                 SELECT COUNT(*) FROM council_deliberations
                 WHERE published_at IS NULL AND final_decision = 'publish'
             """)
-            pending = cursor.fetchone()[0]
+            row = cursor.fetchone()
+            pending = row[0] if row else 0
             conn.close()
             return {"ok": True, "message": f"{pending} items awaiting publication"}
         except Exception as e:
@@ -471,7 +475,8 @@ class ProjectManagerAgent:
                 AND approve = 0
                 AND created_at > datetime('now', '-24 hours')
             """)
-            rejections = cursor.fetchone()[0]
+            row = cursor.fetchone()
+            rejections = row[0] if row else 0
             conn.close()
 
             if rejections > 5:

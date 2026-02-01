@@ -86,6 +86,7 @@ def call_kimi(prompt: str, system_prompt: str = None, model: str = DEFAULT_MODEL
     }
 
     last_error = None
+    response = None  # Initialize to prevent NameError in exception handler
     for attempt in range(max_retries):
         try:
             response = requests.post(OPENROUTER_URL, headers=headers, json=payload, timeout=120)

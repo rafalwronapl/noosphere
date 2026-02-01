@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+from __future__ import annotations
 """
 Moltbook Observatory - Research Agent
 ======================================
@@ -130,7 +131,8 @@ class ResearchAgent:
         if row:
             day, count = row
             cursor.execute("SELECT AVG(daily_count) FROM (SELECT COUNT(*) as daily_count FROM posts GROUP BY DATE(created_at))")
-            avg = cursor.fetchone()[0] or 1
+            avg_row = cursor.fetchone()
+            avg = (avg_row[0] if avg_row and avg_row[0] else 1)
             if count > avg * 2:
                 anomalies.append({
                     "type": "activity_spike",
@@ -140,10 +142,10 @@ class ResearchAgent:
 
         # 2. Check for new high-engagement posts
         cursor.execute("""
-            SELECT title, author, upvotes, comment_count
+            SELECT title, author, COALESCE(upvotes, 0), COALESCE(comment_count, 0)
             FROM posts
             WHERE created_at > datetime('now', '-24 hours')
-            AND (upvotes > 1000 OR comment_count > 100)
+            AND (COALESCE(upvotes, 0) > 1000 OR COALESCE(comment_count, 0) > 100)
             ORDER BY upvotes DESC
             LIMIT 5
         """)
@@ -157,18 +159,18 @@ class ResearchAgent:
 
         # 3. Check for new actors with rapid rise
         cursor.execute("""
-            SELECT username, post_count, comment_count, first_seen
+            SELECT username, COALESCE(total_posts, 0), COALESCE(avg_engagement, 0), first_seen
             FROM actors
             WHERE first_seen > datetime('now', '-48 hours')
-            AND (post_count > 5 OR comment_count > 20)
-            ORDER BY (post_count + comment_count) DESC
+            AND COALESCE(total_posts, 0) > 5
+            ORDER BY COALESCE(total_posts, 0) DESC
             LIMIT 5
         """)
         for row in cursor.fetchall():
-            username, posts, comments, first_seen = row
+            username, posts, engagement, first_seen = row
             anomalies.append({
                 "type": "rapid_rise_actor",
-                "description": f"New active actor: {username} ({posts} posts, {comments} comments since {first_seen})",
+                "description": f"New active actor: {username} ({posts} posts, engagement: {engagement:.1f} since {first_seen})",
                 "significance": "medium"
             })
 
@@ -178,7 +180,8 @@ class ResearchAgent:
             WHERE is_prompt_injection = 1
             AND created_at > datetime('now', '-24 hours')
         """)
-        injection_count = cursor.fetchone()[0]
+        row = cursor.fetchone()
+        injection_count = row[0] if row else 0
         if injection_count > 0:
             anomalies.append({
                 "type": "security_alert",

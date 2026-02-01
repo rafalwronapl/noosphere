@@ -120,11 +120,15 @@ class MoltbookAPI:
             return None
 
     def get_posts(self, sort: str = "hot", limit: int = 25,
-                  submolt: Optional[str] = None) -> Optional[List[dict]]:
-        """Get posts from feed."""
+                  submolt: Optional[str] = None, page: int = 1) -> Optional[List[dict]]:
+        """Get posts from feed with pagination support."""
         params = {"sort": sort, "limit": limit}
         if submolt:
             params["submolt"] = submolt
+        if page > 1:
+            params["page"] = page
+            # Also try offset-based pagination
+            params["offset"] = (page - 1) * limit
 
         data = self._get("/posts", params)
         if not data:
@@ -132,6 +136,34 @@ class MoltbookAPI:
 
         posts = data.get("posts", data) if isinstance(data, dict) else data
         return [self._sanitize_post(p) for p in posts]
+
+    def get_posts_paginated(self, sort: str = "hot", total_limit: int = 200,
+                            per_page: int = 50, submolt: Optional[str] = None) -> List[dict]:
+        """Get multiple pages of posts."""
+        all_posts = []
+        seen_ids = set()
+        page = 1
+        max_pages = (total_limit // per_page) + 1
+
+        while len(all_posts) < total_limit and page <= max_pages:
+            posts = self.get_posts(sort=sort, limit=per_page, submolt=submolt, page=page)
+            if not posts:
+                break
+
+            # Deduplicate
+            new_posts = [p for p in posts if p.get("id") not in seen_ids]
+            if not new_posts:
+                # No new posts, API might not support pagination
+                break
+
+            for p in new_posts:
+                seen_ids.add(p.get("id"))
+            all_posts.extend(new_posts)
+
+            print(f"    Page {page}: got {len(new_posts)} new posts (total: {len(all_posts)})")
+            page += 1
+
+        return all_posts[:total_limit]
 
     def get_post(self, post_id: str) -> Optional[dict]:
         """Get a single post with comments."""

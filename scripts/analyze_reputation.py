@@ -145,7 +145,7 @@ def calculate_consistency_score(cursor, username):
                 else:
                     dt = datetime.strptime(ts[:19], '%Y-%m-%d %H:%M:%S')
                 timestamps.append(dt)
-            except:
+            except (ValueError, TypeError):
                 continue
 
     if len(timestamps) < 3:

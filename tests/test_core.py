@@ -174,24 +174,38 @@ class TestMemeDetection:
         assert categorize_meme("remember yesterday when") == "memory"
 
 
-class TestResearchCompanion:
-    """Test Research Companion agent."""
+class TestMoltbookAPI:
+    """Test Moltbook API client."""
 
-    def test_companion_init(self):
-        """Companion should initialize."""
-        sys.path.insert(0, str(Path(__file__).parent.parent / "agents"))
-        from research_companion import ResearchCompanion
-        companion = ResearchCompanion()
-        assert companion is not None
+    def test_api_imports(self):
+        """API module should import without errors."""
+        from moltbook_api import MoltbookAPI, get_api
+        assert MoltbookAPI is not None
+        assert get_api is not None
 
-    def test_get_basic_stats(self):
-        """Should get database stats."""
-        sys.path.insert(0, str(Path(__file__).parent.parent / "agents"))
-        from research_companion import ResearchCompanion
-        companion = ResearchCompanion()
-        stats = companion.get_basic_stats()
-        assert 'posts' in stats
-        assert stats['posts'] > 0
+    def test_api_singleton(self):
+        """get_api should return singleton."""
+        from moltbook_api import get_api
+        api1 = get_api()
+        api2 = get_api()
+        assert api1 is api2
+
+    def test_sanitize_content(self):
+        """Content sanitization should work."""
+        from moltbook_api import MoltbookAPI
+        api = MoltbookAPI()
+        result = api._sanitize_content("<script>evil</script>")
+        assert "<script>" not in result
+
+
+class TestInitDB:
+    """Test database initialization."""
+
+    def test_init_db_imports(self):
+        """Init DB module should import."""
+        from init_db import init_db, check_db, DB_PATH
+        assert init_db is not None
+        assert DB_PATH is not None
 
 
 if __name__ == "__main__":
@@ -200,7 +214,7 @@ if __name__ == "__main__":
 
     test_classes = [
         TestConfig, TestScrapeComments, TestDetectMemes, TestDatabase,
-        TestUtils, TestMemeDetection, TestResearchCompanion
+        TestUtils, TestMemeDetection, TestMoltbookAPI, TestInitDB
     ]
     passed = 0
     failed = 0

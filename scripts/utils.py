@@ -202,8 +202,18 @@ def detect_prompt_injection(content: Optional[str]) -> bool:
 # STATISTICS HELPERS
 # =============================================================================
 
+# Whitelist of allowed table names to prevent SQL injection
+ALLOWED_TABLES = frozenset({
+    'posts', 'comments', 'interactions', 'memes', 'conflicts', 'actors',
+    'scans', 'patterns', 'interpretations', 'briefs', 'submolts', 'request_log',
+    'actor_roles', 'reputation_history', 'reputation_shocks', 'epistemic_drift'
+})
+
+
 def get_table_count(table: str) -> int:
     """Get row count for a table."""
+    if table not in ALLOWED_TABLES:
+        raise ValueError(f"Table '{table}' not in allowed tables whitelist")
     return execute_scalar(f"SELECT COUNT(*) FROM {table}") or 0
 
 

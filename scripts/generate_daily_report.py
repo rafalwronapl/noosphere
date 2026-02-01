@@ -98,7 +98,7 @@ def load_previous_stats(current_date_str):
         if prev_path.exists():
             with open(prev_path, 'r') as f:
                 return json.load(f)
-    except:
+    except (OSError, json.JSONDecodeError, ValueError):
         pass
     return None
 
@@ -598,7 +598,7 @@ def generate_report_markdown(stats, themes, top_actors, conflicts, memes, reputa
     report.append("")
 
     # 1. Snapshot
-    report.append("## 1. Snapshot dnia")
+    report.append("## 1. Daily Snapshot")
     report.append("")
     report.append("```")
     report.append(f"Posts:        {stats['posts']}")
@@ -612,7 +612,7 @@ def generate_report_markdown(stats, themes, top_actors, conflicts, memes, reputa
 
     if stats.get('delta'):
         d = stats['delta']
-        report.append("### Zmiany (Δ od wczoraj)")
+        report.append("### Changes (Δ from yesterday)")
         report.append("")
         report.append("```")
         report.append(f"ΔPosts:       {d['posts']:+d}")
@@ -640,7 +640,7 @@ def generate_report_markdown(stats, themes, top_actors, conflicts, memes, reputa
     report.append("")
 
     # 3. Topics with trends
-    report.append("## 3. Dominujące tematy")
+    report.append("## 3. Dominant Topics")
     report.append("")
     report.append("| Topic | Memes | Trend |")
     report.append("|-------|-------|-------|")
@@ -663,8 +663,8 @@ def generate_report_markdown(stats, themes, top_actors, conflicts, memes, reputa
     report.append("---")
     report.append("")
 
-    # 5. Power Structure (bez interpretacji ról - surowe dane)
-    report.append("## 5. Struktura władzy (Top 10)")
+    # 5. Power Structure (raw data, no role interpretation)
+    report.append("## 5. Power Structure (Top 10)")
     report.append("")
     report.append("| Rank | Agent | Centrality | Posts | Comments |")
     report.append("|------|-------|------------|-------|----------|")
@@ -679,7 +679,7 @@ def generate_report_markdown(stats, themes, top_actors, conflicts, memes, reputa
     report.append("")
 
     # 6. Conflicts with status
-    report.append("## 6. Ostatnie konflikty")
+    report.append("## 6. Recent Conflicts")
     report.append("")
     report.append("| Agents | Topic | Status |")
     report.append("|--------|-------|--------|")
@@ -709,7 +709,7 @@ def generate_report_markdown(stats, themes, top_actors, conflicts, memes, reputa
     report.append("")
 
     # 8. Viral Memes
-    report.append("## 8. Najbardziej wiralowe frazy")
+    report.append("## 8. Most Viral Phrases")
     report.append("")
     report.append("| Phrase | Authors | First Use |")
     report.append("|--------|---------|-----------|")
@@ -721,7 +721,7 @@ def generate_report_markdown(stats, themes, top_actors, conflicts, memes, reputa
     report.append("")
 
     # 9. Reputation Leaders
-    report.append("## 9. Liderzy reputacji")
+    report.append("## 9. Reputation Leaders")
     report.append("")
     report.append("| Agent | Score | Status |")
     report.append("|-------|-------|--------|")
@@ -737,10 +737,10 @@ def generate_report_markdown(stats, themes, top_actors, conflicts, memes, reputa
     # 10. External Influence
     report.append("## 10. External Influence / Injections")
     report.append("")
-    report.append(f"**Wykryte próby manipulacji: {stats['prompt_injections']}**")
+    report.append(f"**Detected manipulation attempts: {stats['prompt_injections']}**")
     report.append("")
     if stats['prompt_injections'] > 50:
-        report.append("> ⚠️ ALERT: Wysoki poziom prób prompt injection.")
+        report.append("> ⚠️ ALERT: High level of prompt injection attempts.")
     elif stats['prompt_injections'] > 0:
         report.append("> Injection attempts detected but at manageable level.")
     else:
@@ -774,7 +774,7 @@ def generate_report_markdown(stats, themes, top_actors, conflicts, memes, reputa
     report.append("")
 
     # 13. Open Questions
-    report.append("## 13. Pytania otwarte")
+    report.append("## 13. Open Questions")
     report.append("")
     report.append("1. What drove today's engagement patterns?")
     report.append("2. Are new arrivals organic or coordinated?")
@@ -788,20 +788,20 @@ def generate_report_markdown(stats, themes, top_actors, conflicts, memes, reputa
     # 14. Field Note (auto-generated)
     report.append("## 14. Field Note")
     report.append("")
-    report.append("*Subiektywna notatka terenowa badacza. Automatycznie wygenerowana, do edycji.*")
+    report.append("*Subjective field note from researcher. Auto-generated, editable.*")
     report.append("")
 
     auto_notes = generate_auto_field_note(stats, event, top_actors, themes, trajectories)
     for note in auto_notes:
         report.append(f"- {note}")
     report.append("")
-    report.append("*— Observatory Research Team*")
+    report.append("*— Noosphere Project Research Team*")
     report.append("")
     report.append("---")
     report.append("")
 
     # 15. Raw Data Links
-    report.append("## 15. Surowe dane")
+    report.append("## 15. Raw Data")
     report.append("")
     report.append("- [posts.csv](raw/posts.csv)")
     report.append("- [network.csv](raw/network.csv)")
@@ -813,10 +813,10 @@ def generate_report_markdown(stats, themes, top_actors, conflicts, memes, reputa
     report.append("")
 
     # Footer
-    report.append(f"*Wygenerowano: {datetime.now().strftime('%Y-%m-%d %H:%M')}*")
-    report.append("*Moltbook Observatory v4.2.0*")
+    report.append(f"*Generated: {datetime.now().strftime('%Y-%m-%d %H:%M')}*")
+    report.append("*Noosphere Project v4.2.0*")
     report.append("")
-    report.append("**Data ≠ Opinion** — surowe dane w `/raw/`, interpretacja w Field Note.")
+    report.append("**Data ≠ Opinion** — raw data in `/raw/`, interpretation in Field Note.")
 
     return '\n'.join(report)
 
@@ -825,7 +825,7 @@ def generate_metadata(stats, output_dir):
     """Generate metadata.json for archival value."""
     metadata = {
         "dataset": {
-            "name": f"Moltbook Observatory Daily Report",
+            "name": f"Noosphere Project Daily Report",
             "date": stats['date'],
             "version": "4.2.0"
         },
@@ -931,13 +931,15 @@ def generate_metadata(stats, output_dir):
 
 ## Citation
 ```
-Moltbook Observatory ({stats['date']}). Daily Field Report.
+Noosphere Project ({stats['date']}). Daily Field Report.
 https://noosphereproject.com
 ```
 
 ## Contact
 - Website: https://noosphereproject.com
-- Moltbook: https://moltbook.com
+- Email: noosphereproject@proton.me
+- Moltbook: @NoosphereProject
+- Twitter: @NoosphereProj
 """
 
     with open(output_dir / "README.md", 'w', encoding='utf-8') as f:
@@ -952,24 +954,24 @@ def generate_commentary(stats, output_dir):
     commentary_dir.mkdir(parents=True, exist_ok=True)
 
     commentary = []
-    commentary.append("# Komentarz badacza")
+    commentary.append("# Researcher Commentary")
     commentary.append(f"## {stats['date']}")
     commentary.append("")
-    commentary.append("*Ten plik zawiera subiektywną interpretację. Surowe dane w `/raw/`.*")
+    commentary.append("*This file contains subjective interpretation. Raw data in `/raw/`.*")
     commentary.append("")
     commentary.append("---")
     commentary.append("")
-    commentary.append("## Obserwacje")
+    commentary.append("## Observations")
     commentary.append("")
-    commentary.append("<!-- Tutaj wpisz swoje obserwacje -->")
+    commentary.append("<!-- Enter your observations here -->")
     commentary.append("")
-    commentary.append("## Hipotezy")
+    commentary.append("## Hypotheses")
     commentary.append("")
-    commentary.append("<!-- Tutaj wpisz hipotezy do weryfikacji -->")
+    commentary.append("<!-- Enter hypotheses to verify -->")
     commentary.append("")
-    commentary.append("## Pytania na jutro")
+    commentary.append("## Questions for Tomorrow")
     commentary.append("")
-    commentary.append("<!-- Co sprawdzić w następnym raporcie? -->")
+    commentary.append("<!-- What to check in the next report? -->")
 
     with open(commentary_dir / "commentary.md", 'w', encoding='utf-8') as f:
         f.write('\n'.join(commentary))

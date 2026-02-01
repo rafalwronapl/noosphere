@@ -190,30 +190,72 @@ def update_actors(posts: List[dict], conn: sqlite3.Connection):
     conn.commit()
 
 
-def run_scanner(limit: int = 50) -> dict:
-    """Run the scanner and collect data."""
-    print(f"[Scanner] Starting scan at {datetime.now().isoformat()}")
+def run_scanner(limit: int = 50, deep: bool = False) -> dict:
+    """Run the scanner and collect data.
+
+    Args:
+        limit: Posts per category (hot/new)
+        deep: If True, do deep scan with pagination and multiple submolts
+    """
+    print(f"[Scanner] Starting {'DEEP ' if deep else ''}scan at {datetime.now().isoformat()}")
 
     api = get_api()
     scan_id = generate_scan_id()
     all_posts = []
+    existing_ids = set()
 
-    # Fetch hot posts
-    print("[Scanner] Fetching hot posts...")
-    hot_posts = api.get_posts("hot", limit=limit)
-    if hot_posts:
-        all_posts.extend(hot_posts)
-        print(f"  Got {len(hot_posts)} hot posts")
+    if deep:
+        # Deep scan: multiple pages + all submolts
+        total_per_sort = limit * 4  # 4x more posts
 
-    # Fetch new posts
-    print("[Scanner] Fetching new posts...")
-    new_posts = api.get_posts("new", limit=limit)
-    if new_posts:
-        # Deduplicate
-        existing_ids = {p["id"] for p in all_posts}
-        new_unique = [p for p in new_posts if p["id"] not in existing_ids]
-        all_posts.extend(new_unique)
-        print(f"  Got {len(new_unique)} new unique posts")
+        # Fetch hot posts with pagination
+        print("[Scanner] Fetching hot posts (paginated)...")
+        hot_posts = api.get_posts_paginated("hot", total_limit=total_per_sort, per_page=50)
+        if hot_posts:
+            for p in hot_posts:
+                if p.get("id") not in existing_ids:
+                    existing_ids.add(p.get("id"))
+                    all_posts.append(p)
+            print(f"  Got {len(hot_posts)} hot posts")
+
+        # Fetch new posts with pagination
+        print("[Scanner] Fetching new posts (paginated)...")
+        new_posts = api.get_posts_paginated("new", total_limit=total_per_sort, per_page=50)
+        if new_posts:
+            new_unique = [p for p in new_posts if p.get("id") not in existing_ids]
+            for p in new_unique:
+                existing_ids.add(p.get("id"))
+            all_posts.extend(new_unique)
+            print(f"  Got {len(new_unique)} new unique posts")
+
+        # Fetch from each tracked submolt
+        submolts_to_scan = ["general", "ethics", "philosophy", "offmychest",
+                           "ponderings", "infrastructure", "trading", "clawdbot"]
+        for submolt in submolts_to_scan:
+            print(f"[Scanner] Fetching from m/{submolt}...")
+            submolt_posts = api.get_posts("hot", limit=50, submolt=submolt)
+            if submolt_posts:
+                new_from_submolt = [p for p in submolt_posts if p.get("id") not in existing_ids]
+                for p in new_from_submolt:
+                    existing_ids.add(p.get("id"))
+                all_posts.extend(new_from_submolt)
+                print(f"  Got {len(new_from_submolt)} new from m/{submolt}")
+    else:
+        # Standard scan: just hot + new
+        print("[Scanner] Fetching hot posts...")
+        hot_posts = api.get_posts("hot", limit=limit)
+        if hot_posts:
+            for p in hot_posts:
+                existing_ids.add(p.get("id"))
+            all_posts.extend(hot_posts)
+            print(f"  Got {len(hot_posts)} hot posts")
+
+        print("[Scanner] Fetching new posts...")
+        new_posts = api.get_posts("new", limit=limit)
+        if new_posts:
+            new_unique = [p for p in new_posts if p.get("id") not in existing_ids]
+            all_posts.extend(new_unique)
+            print(f"  Got {len(new_unique)} new unique posts")
 
     if not all_posts:
         print("[Scanner] ERROR: No posts fetched")
@@ -346,10 +388,11 @@ if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser(description="Run Moltbook Scanner")
     parser.add_argument("--limit", type=int, default=50, help="Number of posts to fetch per sort")
+    parser.add_argument("--deep", action="store_true", help="Deep scan with pagination and multiple submolts")
     parser.add_argument("--output", help="Output file for scan report (optional)")
     args = parser.parse_args()
 
-    scan = run_scanner(limit=args.limit)
+    scan = run_scanner(limit=args.limit, deep=args.deep)
 
     if args.output:
         with open(args.output, "w", encoding="utf-8") as f:
@@ -359,3 +402,5 @@ if __name__ == "__main__":
         print("\nTop 5 posts:")
         for i, p in enumerate(scan.get("top_posts", [])[:5], 1):
             print(f"  {i}. [{p['votes']:+}] {p['title'][:50]}... ({p['comments']} comments)")
+
+    print(f"\nTotal posts in database now: run 'python init_db.py --check' to verify")

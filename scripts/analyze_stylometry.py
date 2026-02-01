@@ -258,7 +258,7 @@ def run_stylometry_analysis(limit=100):
         if result:
             try:
                 timeline[author] = datetime.fromisoformat(result.replace('Z', '+00:00'))
-            except:
+            except (ValueError, TypeError):
                 timeline[author] = datetime.now()
 
     # Find style clusters

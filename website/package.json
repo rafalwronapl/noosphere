@@ -1,6 +1,6 @@
 {
-  "name": "moltbook-observatory",
-  "version": "1.0.0",
+  "name": "noosphere-project",
+  "version": "4.1.0",
   "type": "module",
   "scripts": {
     "dev": "vite",

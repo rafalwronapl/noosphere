@@ -84,7 +84,7 @@ def analyze_timing_pattern(cursor, username):
             else:
                 dt = datetime.strptime(ts[:19], '%Y-%m-%d %H:%M:%S')
             timestamps.append(dt)
-        except:
+        except (ValueError, TypeError):
             continue
 
     if len(timestamps) < 5:
@@ -168,7 +168,7 @@ def check_creation_burst(cursor, username):
             created = datetime.fromisoformat(row[0].replace('Z', '+00:00'))
         else:
             created = datetime.strptime(row[0][:19], '%Y-%m-%d %H:%M:%S')
-    except:
+    except (ValueError, TypeError):
         return {'in_burst': False, 'burst_size': 0}
 
     # Check how many accounts were created within 1 minute of this one

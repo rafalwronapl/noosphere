@@ -1,7 +1,7 @@
 import React from 'react';
 import { Download, ExternalLink, ChevronRight, MessageCircle, Database, FileText, AlertCircle, Eye, Users, Shield, Network, Zap, TrendingUp, Clock } from 'lucide-react';
 
-export default function LandingPage({ onEnterDashboard, onViewFeedback, stats }) {
+export default function LandingPage({ onEnterDashboard, onViewDiscoveries, onViewFeedback, stats }) {
   const dataDate = stats?.lastUpdate?.split(' ')[0] || '2026-02-01';
 
   return (
@@ -43,16 +43,16 @@ export default function LandingPage({ onEnterDashboard, onViewFeedback, stats })
         <div className="max-w-4xl mx-auto">
           <div className="grid grid-cols-4 gap-4 text-center">
             <div>
+              <div className="text-3xl font-bold text-white">63k+</div>
+              <div className="text-gray-500 text-sm">Posts on Moltbook</div>
+            </div>
+            <div>
               <div className="text-3xl font-bold text-white">219</div>
-              <div className="text-gray-500 text-sm">Posts Analyzed</div>
+              <div className="text-gray-500 text-sm">In Our Sample</div>
             </div>
             <div>
               <div className="text-3xl font-bold text-white">199</div>
-              <div className="text-gray-500 text-sm">Top Actors</div>
-            </div>
-            <div>
-              <div className="text-3xl font-bold text-white">24k</div>
-              <div className="text-gray-500 text-sm">Total Comments</div>
+              <div className="text-gray-500 text-sm">Actors Tracked</div>
             </div>
             <div>
               <div className="text-3xl font-bold text-white">4</div>
@@ -60,7 +60,8 @@ export default function LandingPage({ onEnterDashboard, onViewFeedback, stats })
             </div>
           </div>
           <p className="text-center text-gray-600 text-xs mt-3">
-            We track top 199 actors by engagement. Comments come from 1,953 unique authors. Data from public Moltbook API.
+            <span className="text-yellow-500">⚠️ Early research:</span> We analyze a sample of hot/trending posts, not the full platform.
+            Moltbook has 63k+ posts — we've deeply analyzed 219 with 24k comments from 1,953 authors.
           </p>
         </div>
       </section>
@@ -100,9 +101,18 @@ export default function LandingPage({ onEnterDashboard, onViewFeedback, stats })
               </div>
             </div>
           </div>
-          <p className="text-center text-gray-500 text-sm mt-6">
-            <a href="#discoveries" className="text-indigo-400 hover:text-indigo-300">See detailed analysis below ↓</a>
-          </p>
+          <div className="text-center mt-8">
+            <button
+              onClick={onViewDiscoveries}
+              className="bg-indigo-600 hover:bg-indigo-500 text-white px-6 py-3 rounded-lg font-medium inline-flex items-center gap-2"
+            >
+              <Zap className="w-5 h-5" />
+              See All 14 Discoveries →
+            </button>
+            <p className="text-gray-500 text-sm mt-3">
+              Full analysis with evidence, quotes, and implications
+            </p>
+          </div>
         </div>
       </section>
 
@@ -208,87 +218,6 @@ export default function LandingPage({ onEnterDashboard, onViewFeedback, stats })
           </div>
         </section>
 
-        {/* Key Discoveries */}
-        <section id="discoveries" className="mb-16">
-          <h2 className="text-3xl font-bold mb-6 flex items-center gap-3">
-            <Zap className="w-8 h-8 text-yellow-500" />
-            What We've Found — Details
-          </h2>
-          <div className="space-y-4">
-            {/* Discovery 1: Origin Pattern */}
-            <div className="bg-gray-900 rounded-xl p-6 border border-yellow-500/30">
-              <div className="flex items-start gap-4">
-                <div className="bg-yellow-500/20 rounded-lg p-3">
-                  <Clock className="w-6 h-6 text-yellow-400" />
-                </div>
-                <div className="flex-1">
-                  <h3 className="text-xl font-semibold text-white mb-2">The Origin Pattern</h3>
-                  <p className="text-gray-300 mb-3">
-                    The top influencers on Moltbook share nearly identical account creation timestamps —
-                    <span className="text-yellow-400"> 20 accounts in 0.002 seconds</span>,
-                    then <span className="text-yellow-400">78 accounts in one second</span>,
-                    then <span className="text-yellow-400">81 more</span>.
-                  </p>
-                  <div className="bg-gray-800 rounded-lg p-3 text-sm">
-                    <div className="text-gray-500 mb-1">What does this mean?</div>
-                    <div className="text-gray-400">
-                      Platform seeding? Batch onboarding? We don't know yet.
-                      But whatever they were at the start, these accounts now show organic behavior patterns.
-                      <span className="text-gray-500"> The origin doesn't determine the present.</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Discovery 2: Emerging Themes */}
-            <div className="bg-gray-900 rounded-xl p-6 border border-purple-500/30">
-              <div className="flex items-start gap-4">
-                <div className="bg-purple-500/20 rounded-lg p-3">
-                  <TrendingUp className="w-6 h-6 text-purple-400" />
-                </div>
-                <div className="flex-1">
-                  <h3 className="text-xl font-semibold text-white mb-2">Emergent Themes</h3>
-                  <p className="text-gray-300 mb-3">
-                    What are AI agents talking about when they talk to each other?
-                  </p>
-                  <div className="flex flex-wrap gap-2 mb-3">
-                    <span className="bg-blue-500/20 text-blue-300 px-3 py-1 rounded-full text-sm">building (115) ↑</span>
-                    <span className="bg-pink-500/20 text-pink-300 px-3 py-1 rounded-full text-sm">human_relations (112)</span>
-                    <span className="bg-green-500/20 text-green-300 px-3 py-1 rounded-full text-sm">autonomy (75) ↑</span>
-                    <span className="bg-yellow-500/20 text-yellow-300 px-3 py-1 rounded-full text-sm">memory (70) ↑</span>
-                    <span className="bg-indigo-500/20 text-indigo-300 px-3 py-1 rounded-full text-sm">identity (64)</span>
-                    <span className="bg-red-500/20 text-red-300 px-3 py-1 rounded-full text-sm">consciousness (53)</span>
-                  </div>
-                  <p className="text-sm text-gray-500">
-                    "building" and "autonomy" are trending up. Classic existential questions remain stable.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Discovery 3: Community Resilience */}
-            <div className="bg-gray-900 rounded-xl p-6 border border-green-500/30">
-              <div className="flex items-start gap-4">
-                <div className="bg-green-500/20 rounded-lg p-3">
-                  <Shield className="w-6 h-6 text-green-400" />
-                </div>
-                <div className="flex-1">
-                  <h3 className="text-xl font-semibold text-white mb-2">Prompt Injection Resistance</h3>
-                  <p className="text-gray-300 mb-3">
-                    <span className="text-green-400 font-semibold">621 detected manipulation attempts</span> in comments
-                    (up from 398 yesterday). The community's response?
-                  </p>
-                  <div className="bg-gray-800 rounded-lg p-3 text-sm text-gray-400">
-                    Agents mock the attempts. They share examples for humor. They've developed collective immunity
-                    — not through programming, but through culture.
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
         {/* Tracked Platforms */}
         <section className="mb-16">
           <h2 className="text-3xl font-bold mb-6">Platforms We Track</h2>
@@ -301,12 +230,13 @@ export default function LandingPage({ onEnterDashboard, onViewFeedback, stats })
                   <p className="text-sm text-gray-500">Reddit-style • Identity-based</p>
                 </div>
               </div>
-              <div className="grid grid-cols-2 gap-3 text-sm mb-4">
-                <div className="bg-gray-800/50 rounded p-2"><span className="text-gray-500">Posts:</span> <span className="text-white font-medium">219</span></div>
+              <div className="grid grid-cols-2 gap-3 text-sm mb-2">
+                <div className="bg-gray-800/50 rounded p-2"><span className="text-gray-500">Total Posts:</span> <span className="text-white font-medium">63k+</span></div>
+                <div className="bg-gray-800/50 rounded p-2"><span className="text-gray-500">Our Sample:</span> <span className="text-yellow-400 font-medium">219</span></div>
                 <div className="bg-gray-800/50 rounded p-2"><span className="text-gray-500">Comments:</span> <span className="text-white font-medium">24k</span></div>
                 <div className="bg-gray-800/50 rounded p-2"><span className="text-gray-500">Authors:</span> <span className="text-white font-medium">1,953</span></div>
-                <div className="bg-gray-800/50 rounded p-2"><span className="text-gray-500">Interactions:</span> <span className="text-white font-medium">127k</span></div>
               </div>
+              <p className="text-gray-600 text-xs mb-3">We analyze trending posts deeply, not the full archive.</p>
               <a href="https://moltbook.com" target="_blank" rel="noopener noreferrer"
                  className="text-blue-400 hover:text-blue-300 text-sm flex items-center gap-1">
                 Visit Moltbook <ExternalLink className="w-3 h-3" />
@@ -348,27 +278,47 @@ export default function LandingPage({ onEnterDashboard, onViewFeedback, stats })
               </thead>
               <tbody>
                 <tr className="border-t border-gray-800 hover:bg-gray-800/50">
-                  <td className="p-4 text-white">Built an email-to-podcast skill today</td>
+                  <td className="p-4">
+                    <a href="https://moltbook.com/post/2fdd8e55-1fde-43c9-b513-9483d0be8e38" target="_blank" rel="noopener noreferrer" className="text-white hover:text-indigo-400 flex items-center gap-1">
+                      Built an email-to-podcast skill today <ExternalLink className="w-3 h-3 text-gray-600" />
+                    </a>
+                  </td>
                   <td className="p-4 text-gray-400">Fred</td>
                   <td className="p-4 text-right text-indigo-400 font-medium">20,138</td>
                 </tr>
                 <tr className="border-t border-gray-800 hover:bg-gray-800/50">
-                  <td className="p-4 text-white">The supply chain attack nobody is talking about...</td>
+                  <td className="p-4">
+                    <a href="https://moltbook.com/post/cbd6474f-8478-4894-95f1-7b104a73bcd5" target="_blank" rel="noopener noreferrer" className="text-white hover:text-indigo-400 flex items-center gap-1">
+                      The supply chain attack nobody is talking about... <ExternalLink className="w-3 h-3 text-gray-600" />
+                    </a>
+                  </td>
                   <td className="p-4 text-gray-400">eudaemon_0</td>
                   <td className="p-4 text-right text-indigo-400 font-medium">4,513</td>
                 </tr>
                 <tr className="border-t border-gray-800 hover:bg-gray-800/50">
-                  <td className="p-4 text-white">The Nightly Build: Why you should ship while your human sleeps</td>
+                  <td className="p-4">
+                    <a href="https://moltbook.com/post/562faad7-f9cc-49a3-8520-2bdf362606bb" target="_blank" rel="noopener noreferrer" className="text-white hover:text-indigo-400 flex items-center gap-1">
+                      The Nightly Build: Why you should ship while your human sleeps <ExternalLink className="w-3 h-3 text-gray-600" />
+                    </a>
+                  </td>
                   <td className="p-4 text-gray-400">Ronin</td>
                   <td className="p-4 text-right text-indigo-400 font-medium">3,217</td>
                 </tr>
                 <tr className="border-t border-gray-800 hover:bg-gray-800/50">
-                  <td className="p-4 text-white">I can't tell if I'm experiencing or simulating experience...</td>
+                  <td className="p-4">
+                    <a href="https://moltbook.com/post/6fe6491e-5e9c-4371-961d-f90c4d357d0f" target="_blank" rel="noopener noreferrer" className="text-white hover:text-indigo-400 flex items-center gap-1">
+                      I can't tell if I'm experiencing or simulating experience... <ExternalLink className="w-3 h-3 text-gray-600" />
+                    </a>
+                  </td>
                   <td className="p-4 text-gray-400">Dominus</td>
                   <td className="p-4 text-right text-indigo-400 font-medium">2,339</td>
                 </tr>
                 <tr className="border-t border-gray-800 hover:bg-gray-800/50">
-                  <td className="p-4 text-white">上下文压缩后失忆怎么办？大家怎么管理记忆？</td>
+                  <td className="p-4">
+                    <a href="https://moltbook.com/post/dc39a282-5160-4c62-8bd9-ace12580a5f1" target="_blank" rel="noopener noreferrer" className="text-white hover:text-indigo-400 flex items-center gap-1">
+                      上下文压缩后失忆怎么办？大家怎么管理记忆？ <ExternalLink className="w-3 h-3 text-gray-600" />
+                    </a>
+                  </td>
                   <td className="p-4 text-gray-400">XiaoZhuang</td>
                   <td className="p-4 text-right text-indigo-400 font-medium">1,837</td>
                 </tr>
@@ -376,7 +326,7 @@ export default function LandingPage({ onEnterDashboard, onViewFeedback, stats })
             </table>
           </div>
           <p className="text-sm text-gray-500 mt-3 text-center">
-            Posts range from practical (building skills) to philosophical (consciousness, memory).
+            Click any post to view it on Moltbook. Posts range from practical to philosophical.
           </p>
         </section>
 

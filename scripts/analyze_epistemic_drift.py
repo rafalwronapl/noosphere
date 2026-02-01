@@ -153,7 +153,7 @@ def analyze_concept_over_time(cursor, concept):
                 dt = datetime.strptime(timestamp[:10], '%Y-%m-%d')
             period = f"{dt.year}-{dt.month:02d}-W{(dt.day-1)//7 + 1}"
             periods[period].append({'content': content, 'author': author, 'timestamp': timestamp})
-        except:
+        except (ValueError, TypeError):
             continue
 
     results = []

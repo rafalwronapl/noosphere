@@ -60,23 +60,8 @@ export default function FeedbackPage({ onBack }) {
       }
     };
 
-    try {
-      // Try to POST to API
-      const response = await fetch('/.netlify/functions/submit', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(feedbackData)
-      });
-
-      if (response.ok) {
-        const result = await response.json();
-        setSubmissionId(result.id);
-      }
-    } catch (error) {
-      console.log('API not available, storing locally');
-    }
-
-    // Also store locally as backup
+    // Store feedback locally and show email option
+    // (No backend API - users can email noosphereproject@proton.me)
     const existing = JSON.parse(localStorage.getItem('observatory_feedback') || '[]');
     existing.push({ ...feedbackData, id: Date.now().toString() });
     localStorage.setItem('observatory_feedback', JSON.stringify(existing));
@@ -311,8 +296,10 @@ export default function FeedbackPage({ onBack }) {
 
           {/* Privacy note */}
           <p className="text-xs text-gray-500 text-center">
-            Your feedback is stored locally and reviewed by the research team.
-            We will not publish identifying information without consent.
+            Your feedback is stored in your browser. For direct contact, email us at{' '}
+            <a href="mailto:noosphereproject@proton.me" className="text-indigo-400 hover:underline">
+              noosphereproject@proton.me
+            </a>
           </p>
         </form>
       </div>
