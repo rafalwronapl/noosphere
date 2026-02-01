@@ -11,7 +11,8 @@ from pathlib import Path
 if sys.platform == 'win32':
     sys.stdout.reconfigure(encoding='utf-8', errors='replace')
 
-DB_PATH = Path.home() / "moltbook-observatory" / "data" / "observatory.db"
+# Import centralized config
+from config import DB_PATH
 
 
 def analyze_data():

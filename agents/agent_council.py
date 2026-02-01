@@ -61,6 +61,7 @@ class CouncilDecision:
     final_decision: str  # "publish", "revise", "reject"
     consensus_summary: str
     timestamp: str
+    deliberation_id: int = None  # Database ID, set after saving
 
 
 @dataclass
@@ -381,8 +382,9 @@ Be concise. Focus on your role's perspective."""
             timestamp=datetime.now().isoformat()
         )
 
-        # Save to database
-        self._save_deliberation(topic, content, result)
+        # Save to database and get ID (avoids race condition)
+        deliberation_id = self._save_deliberation(topic, content, result)
+        result.deliberation_id = deliberation_id
 
         logger.info(f"Deliberation complete: {decision.upper()} ({approvals}/{total} approve)")
 
@@ -391,15 +393,19 @@ Be concise. Focus on your role's perspective."""
     def deliberate_with_id(self, topic: str, content: str, require_unanimous: bool = False) -> tuple['CouncilDecision', int]:
         """
         Run full council deliberation and return both decision and deliberation_id.
-        Avoids race condition by returning the ID directly after saving.
+
+        Note: The ID is now included in CouncilDecision.deliberation_id,
+        so this method is mainly for backwards compatibility.
         """
         decision = self.deliberate(topic, content, require_unanimous)
-        # Get the ID of the just-saved deliberation
-        deliberation_id = self._get_last_deliberation_id(topic)
-        return decision, deliberation_id
+        # ID is already set by deliberate() - no race condition
+        return decision, decision.deliberation_id
 
     def _get_last_deliberation_id(self, topic: str) -> int:
-        """Get the ID of the most recent deliberation for a topic."""
+        """Get the ID of the most recent deliberation for a topic.
+
+        DEPRECATED: Use CouncilDecision.deliberation_id instead to avoid race conditions.
+        """
         conn = sqlite3.connect(self.db_path)
         cursor = conn.cursor()
         cursor.execute("""
@@ -474,8 +480,12 @@ Be concise. Focus on your role's perspective."""
             decision = self.deliberate(topic, content)
             return decision, screening
 
-    def _save_deliberation(self, topic: str, content: str, decision: CouncilDecision, auto_approved: bool = False):
-        """Save deliberation to database."""
+    def _save_deliberation(self, topic: str, content: str, decision: CouncilDecision, auto_approved: bool = False) -> int:
+        """Save deliberation to database.
+
+        Returns:
+            The database ID of the saved deliberation (avoids race conditions).
+        """
         conn = sqlite3.connect(self.db_path)
         cursor = conn.cursor()
 
@@ -520,6 +530,7 @@ Be concise. Focus on your role's perspective."""
         conn.commit()
         conn.close()
         logger.info(f"Saved deliberation #{deliberation_id}")
+        return deliberation_id
 
     def _generate_consensus(self, votes: list[AgentVote], decision: str) -> str:
         """Generate a summary of the council's reasoning."""

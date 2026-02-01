@@ -26,7 +26,8 @@ from dataclasses import dataclass
 sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
 sys.path.insert(0, str(Path(__file__).parent))
 
-from config import setup_logging, PROJECT_ROOT
+import os
+from config import setup_logging, PROJECT_ROOT, API_KEYS
 from guardian import Guardian, GuardianResult
 
 logger = setup_logging("moltbook_agent")
@@ -37,7 +38,7 @@ with open(CONFIG_PATH, "r", encoding="utf-8") as f:
     CONFIG = json.load(f)
 
 API_BASE = CONFIG["moltbook"]["base_url"]
-API_KEY = CONFIG["moltbook"].get("api_key", "")
+API_KEY = API_KEYS.get("MOLTBOOK_API_KEY", os.environ.get("MOLTBOOK_API_KEY", ""))
 AGENT_NAME = CONFIG["moltbook"].get("agent_name", "Noosphere_Observer")
 RATE_LIMIT = CONFIG["moltbook"].get("rate_limit_seconds", 5)
 

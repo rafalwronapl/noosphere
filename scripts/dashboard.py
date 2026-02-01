@@ -31,7 +31,8 @@ class Colors:
     END = '\033[0m'
 
 
-DB_PATH = Path.home() / "moltbook-observatory" / "data" / "observatory.db"
+# Import centralized config
+from config import DB_PATH
 
 
 def print_header(text):

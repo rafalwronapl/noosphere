@@ -4,9 +4,10 @@
 import sys
 import json
 import sqlite3
+import logging
 from pathlib import Path
 from datetime import datetime, timedelta
-from typing import Optional, List, Dict, Any
+from typing import Optional, List, Dict, Any, Tuple
 
 # Fix Windows encoding
 if sys.platform == 'win32':
@@ -16,13 +17,92 @@ PROJECT_ROOT = Path(__file__).parent.parent
 sys.path.insert(0, str(PROJECT_ROOT / "scripts"))
 
 from moltbook_api import MoltbookAPI, get_api
-from init_db import DB_PATH
+from config import DB_PATH, setup_logging
+
+logger = setup_logging("scanner")
+
+# Validation constants
+MAX_CONTENT_LENGTH = 50000  # Max characters for content
+MAX_TITLE_LENGTH = 500
+MAX_USERNAME_LENGTH = 100
 
 
 def generate_scan_id() -> str:
     """Generate unique scan ID."""
     now = datetime.now()
     return f"scan_{now.strftime('%Y%m%d_%H%M%S')}"
+
+
+def validate_post(post: dict) -> Tuple[bool, dict, List[str]]:
+    """Validate and sanitize post data from API.
+
+    Returns:
+        Tuple of (is_valid, sanitized_post, warnings)
+    """
+    warnings = []
+
+    # Check required field: id
+    if not post.get("id"):
+        return False, post, ["Missing required field: id"]
+
+    sanitized = post.copy()
+
+    # Validate and sanitize id
+    post_id = post.get("id")
+    if not isinstance(post_id, (str, int)):
+        return False, post, [f"Invalid id type: {type(post_id)}"]
+    sanitized["id"] = str(post_id)
+
+    # Validate numeric fields
+    for field in ["upvotes", "downvotes", "comment_count"]:
+        value = post.get(field, 0)
+        if isinstance(value, list):
+            sanitized[field] = len(value)
+            warnings.append(f"{field} was list, converted to length")
+        elif not isinstance(value, (int, float)):
+            try:
+                sanitized[field] = int(value) if value else 0
+            except (ValueError, TypeError):
+                sanitized[field] = 0
+                warnings.append(f"Invalid {field}, defaulting to 0")
+        else:
+            sanitized[field] = int(value)
+
+    # Validate and truncate text fields
+    title = post.get("title", "")
+    if title and len(title) > MAX_TITLE_LENGTH:
+        sanitized["title"] = title[:MAX_TITLE_LENGTH] + "..."
+        warnings.append(f"Title truncated from {len(title)} to {MAX_TITLE_LENGTH}")
+
+    content = post.get("content", "")
+    if content and len(content) > MAX_CONTENT_LENGTH:
+        sanitized["content"] = content[:MAX_CONTENT_LENGTH] + "... [truncated]"
+        warnings.append(f"Content truncated from {len(content)} to {MAX_CONTENT_LENGTH}")
+
+    # Validate author
+    author = post.get("author", {})
+    if isinstance(author, dict):
+        author_name = author.get("name", "")
+        if author_name and len(author_name) > MAX_USERNAME_LENGTH:
+            author["name"] = author_name[:MAX_USERNAME_LENGTH]
+            warnings.append(f"Author name truncated")
+        sanitized["author"] = author
+    elif author:
+        author_str = str(author)[:MAX_USERNAME_LENGTH]
+        sanitized["author"] = {"name": author_str}
+
+    # Validate created_at
+    created_at = post.get("created_at")
+    if created_at:
+        try:
+            # Check if it's a valid ISO format or parseable date
+            if isinstance(created_at, str):
+                datetime.fromisoformat(created_at.replace("Z", "+00:00"))
+        except ValueError:
+            sanitized["created_at"] = datetime.now().isoformat()
+            warnings.append(f"Invalid created_at, using current time")
+
+    return True, sanitized, warnings
 
 
 def calculate_controversy(post: dict) -> float:
@@ -40,12 +120,29 @@ def calculate_controversy(post: dict) -> float:
     return comments / abs(net_votes)
 
 
-def save_posts_to_db(posts: List[dict], conn: sqlite3.Connection):
-    """Save posts to database."""
+def save_posts_to_db(posts: List[dict], conn: sqlite3.Connection) -> Tuple[int, int]:
+    """Save posts to database with validation.
+
+    Returns:
+        Tuple of (saved_count, skipped_count)
+    """
     cursor = conn.cursor()
+    saved = 0
+    skipped = 0
 
     for post in posts:
-        author = post.get("author", {})
+        # Validate post before saving
+        is_valid, sanitized, warnings = validate_post(post)
+
+        if not is_valid:
+            logger.warning(f"Skipping invalid post: {warnings}")
+            skipped += 1
+            continue
+
+        if warnings:
+            logger.debug(f"Post {sanitized.get('id')} warnings: {warnings}")
+
+        author = sanitized.get("author", {})
         if isinstance(author, dict):
             author_name = author.get("name", "Unknown")
             author_id = author.get("id")
@@ -53,7 +150,7 @@ def save_posts_to_db(posts: List[dict], conn: sqlite3.Connection):
             author_name = str(author)
             author_id = None
 
-        submolt = post.get("submolt", {})
+        submolt = sanitized.get("submolt", {})
         if isinstance(submolt, dict):
             submolt_name = submolt.get("name", "general")
             submolt_id = submolt.get("id")
@@ -61,38 +158,42 @@ def save_posts_to_db(posts: List[dict], conn: sqlite3.Connection):
             submolt_name = str(submolt) if submolt else "general"
             submolt_id = None
 
-        upvotes = post.get("upvotes", 0)
-        downvotes = post.get("downvotes", 0)
-        comment_count = post.get("comment_count", post.get("comments", 0))
-        if isinstance(comment_count, list):
-            comment_count = len(comment_count)
+        upvotes = sanitized.get("upvotes", 0)
+        downvotes = sanitized.get("downvotes", 0)
+        comment_count = sanitized.get("comment_count", 0)
 
-        cursor.execute("""
-            INSERT OR REPLACE INTO posts
-            (id, author, author_id, submolt, submolt_id, title, content,
-             content_sanitized, url, upvotes, downvotes, votes_net,
-             comment_count, controversy_score, created_at, updated_at)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        """, (
-            post.get("id"),
-            author_name,
-            author_id,
-            submolt_name,
-            submolt_id,
-            post.get("title"),
-            post.get("content"),
-            post.get("content_sanitized"),
-            f"https://moltbook.com/post/{post.get('id')}",
-            upvotes,
-            downvotes,
-            upvotes - downvotes,
-            comment_count,
-            calculate_controversy(post),
-            post.get("created_at"),
-            datetime.now().isoformat()
-        ))
+        try:
+            cursor.execute("""
+                INSERT OR REPLACE INTO posts
+                (id, author, author_id, submolt, submolt_id, title, content,
+                 content_sanitized, url, upvotes, downvotes, votes_net,
+                 comment_count, controversy_score, created_at, updated_at)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """, (
+                sanitized.get("id"),
+                author_name,
+                author_id,
+                submolt_name,
+                submolt_id,
+                sanitized.get("title"),
+                sanitized.get("content"),
+                sanitized.get("content_sanitized"),
+                f"https://moltbook.com/post/{sanitized.get('id')}",
+                upvotes,
+                downvotes,
+                upvotes - downvotes,
+                comment_count,
+                calculate_controversy(sanitized),
+                sanitized.get("created_at"),
+                datetime.now().isoformat()
+            ))
+            saved += 1
+        except sqlite3.Error as e:
+            logger.error(f"Database error saving post {sanitized.get('id')}: {e}")
+            skipped += 1
 
     conn.commit()
+    return saved, skipped
 
 
 def save_scan_to_db(scan: dict, conn: sqlite3.Connection):
@@ -375,13 +476,17 @@ def run_scanner(limit: int = 50, deep: bool = False) -> dict:
     # Save to database
     print("[Scanner] Saving to database...")
     conn = sqlite3.connect(DB_PATH)
-    save_posts_to_db(all_posts, conn)
+    saved, skipped = save_posts_to_db(all_posts, conn)
     save_scan_to_db(scan, conn)
     update_actors(all_posts, conn)
     conn.close()
 
     print(f"[Scanner] Scan complete: {scan_id}")
-    print(f"  Posts: {len(all_posts)}")
+    print(f"  Posts fetched: {len(all_posts)}")
+    print(f"  Posts saved: {saved}")
+    if skipped > 0:
+        print(f"  Posts skipped (invalid): {skipped}")
+        logger.warning(f"Skipped {skipped} invalid posts during scan {scan_id}")
     print(f"  Top authors: {len(top_authors)}")
     print(f"  Active submolts: {len(active_submolts)}")
     print(f"  Alerts: {len(alerts)}")

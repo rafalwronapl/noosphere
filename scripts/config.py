@@ -53,24 +53,44 @@ LOBCHAN_RATE_LIMIT = 3  # seconds between requests
 OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions"
 DEFAULT_MODEL = "moonshotai/kimi-k2.5"  # K2.5 - better reasoning, 262K context
 
-# Load API keys from ~/.openclaw/.env
+# Load API keys from environment files
 def load_api_keys() -> dict:
-    """Load API keys from .openclaw/.env file."""
-    keys = {}
-    env_path = Path.home() / ".openclaw" / ".env"
+    """Load API keys from .env files and environment variables.
 
-    if env_path.exists():
-        with open(env_path, "r") as f:
+    Priority (highest to lowest):
+    1. Environment variables
+    2. Project config/.env
+    3. ~/.openclaw/.env
+    """
+    keys = {}
+
+    # Check ~/.openclaw/.env first (lowest priority)
+    openclaw_env = Path.home() / ".openclaw" / ".env"
+    if openclaw_env.exists():
+        with open(openclaw_env, "r") as f:
             for line in f:
                 line = line.strip()
                 if "=" in line and not line.startswith("#"):
                     key, value = line.split("=", 1)
-                    keys[key] = value
+                    if value:  # Only set if value is not empty
+                        keys[key] = value
 
-    # Also check environment variables
+    # Check project config/.env (higher priority)
+    project_env = BASE_DIR / "config" / ".env"
+    if project_env.exists():
+        with open(project_env, "r") as f:
+            for line in f:
+                line = line.strip()
+                if "=" in line and not line.startswith("#"):
+                    key, value = line.split("=", 1)
+                    if value:  # Only set if value is not empty
+                        keys[key] = value
+
+    # Environment variables have highest priority
     for key in ["OPENROUTER_API_KEY", "MOLTBOOK_API_KEY", "TWITTER_API_KEY"]:
-        if key not in keys and os.environ.get(key):
-            keys[key] = os.environ[key]
+        env_val = os.environ.get(key)
+        if env_val:
+            keys[key] = env_val
 
     return keys
 

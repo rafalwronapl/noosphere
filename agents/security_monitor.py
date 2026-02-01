@@ -220,8 +220,12 @@ class SecurityMonitor:
         logger.info(f"Spam scan: {len(alerts)} patterns found ({duration:.2f}s)")
         return alerts
 
-    def check_data_integrity(self) -> list[SecurityAlert]:
-        """Check database integrity and consistency."""
+    def check_data_integrity(self, enforce_critical: bool = True) -> list[SecurityAlert]:
+        """Check database integrity and consistency.
+
+        Args:
+            enforce_critical: If True, raise exception on critical integrity failures
+        """
         logger.info("Checking data integrity")
         start_time = time.time()
 
@@ -265,12 +269,23 @@ class SecurityMonitor:
         row = cursor.fetchone()
         integrity = row[0] if row else "unknown"
         if integrity != "ok":
-            alerts.append(SecurityAlert(
+            alert = SecurityAlert(
                 level=ThreatLevel.CRITICAL,
                 category="data_integrity",
                 message=f"Database integrity check failed: {integrity}",
                 details={"check_result": integrity}
-            ))
+            )
+            alerts.append(alert)
+            conn.close()
+
+            # Enforce critical failures - stop processing with corrupted data
+            if enforce_critical:
+                logger.critical(f"DATABASE CORRUPTION DETECTED: {integrity}")
+                logger.critical("Stopping operations to prevent further damage")
+                self.save_alerts([alert])
+                raise RuntimeError(f"Database integrity check failed: {integrity}. "
+                                   "Operations halted to prevent data corruption. "
+                                   "Please restore from backup or run database repair.")
 
         conn.close()
         duration = time.time() - start_time
@@ -472,20 +487,26 @@ class SecurityMonitor:
         conn.close()
         return alerts
 
-    def run_full_scan(self) -> dict:
-        """Run all security scans and return summary."""
+    def run_full_scan(self, enforce_integrity: bool = True) -> dict:
+        """Run all security scans and return summary.
+
+        Args:
+            enforce_integrity: If True, halt on database corruption
+        """
         logger.info("=" * 50)
         logger.info("STARTING FULL SECURITY SCAN")
         logger.info("=" * 50)
 
         all_alerts = []
 
+        # Check data integrity FIRST - if DB is corrupted, don't trust other checks
+        all_alerts.extend(self.check_data_integrity(enforce_critical=enforce_integrity))
+
         # Infrastructure security (REAL threats)
         all_alerts.extend(self.check_config_integrity())
         all_alerts.extend(self.check_unauthorized_publications())
         all_alerts.extend(self.check_database_modifications())
         all_alerts.extend(self.check_publication_content())
-        all_alerts.extend(self.check_data_integrity())
 
         # Research data analysis (for documentation, not security)
         # These are stored separately, not as security alerts
@@ -544,6 +565,8 @@ def main():
     parser = argparse.ArgumentParser(description="Moltbook Observatory Security Monitor")
     parser.add_argument("--watch", action="store_true", help="Run in continuous watch mode")
     parser.add_argument("--interval", type=int, default=30, help="Watch interval in minutes")
+    parser.add_argument("--no-enforce", action="store_true",
+                        help="Don't halt on critical integrity failures (use for recovery)")
     args = parser.parse_args()
 
     monitor = SecurityMonitor()
@@ -551,8 +574,13 @@ def main():
     if args.watch:
         monitor.watch_mode(args.interval)
     else:
-        summary = monitor.run_full_scan()
-        print(json.dumps(summary, indent=2))
+        try:
+            summary = monitor.run_full_scan(enforce_integrity=not args.no_enforce)
+            print(json.dumps(summary, indent=2))
+        except RuntimeError as e:
+            print(f"\n[CRITICAL ERROR] {e}")
+            print("\nTo run without enforcement (for recovery): python security_monitor.py --no-enforce")
+            sys.exit(1)
 
 
 if __name__ == "__main__":

@@ -9,7 +9,7 @@
     "default_limit": 50,
     "timeout_seconds": 30,
     "agent_name": "Noosphere_Observer",
-    "api_key": "REMOVED_API_KEY",
+    "api_key_env": "MOLTBOOK_API_KEY",
     "profile_url": "https://moltbook.com/u/Noosphere_Observer"
   },
   "schedule": {
