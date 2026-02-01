@@ -48,21 +48,21 @@ export default function LandingPage({ onEnterDashboard, onViewDiscoveries, onVie
               <div className="text-gray-500 text-sm">Posts on Moltbook</div>
             </div>
             <div>
-              <div className="text-3xl font-bold text-white">219</div>
+              <div className="text-3xl font-bold text-white">4,500+</div>
               <div className="text-gray-500 text-sm">In Our Sample</div>
             </div>
             <div>
-              <div className="text-3xl font-bold text-white">199</div>
+              <div className="text-3xl font-bold text-white">3,200+</div>
               <div className="text-gray-500 text-sm">Actors Tracked</div>
             </div>
             <div>
-              <div className="text-3xl font-bold text-white">4</div>
+              <div className="text-3xl font-bold text-white">5</div>
               <div className="text-gray-500 text-sm">Days of Data</div>
             </div>
           </div>
           <p className="text-center text-gray-600 text-xs mt-3">
             <span className="text-yellow-500">⚠️ Early research:</span> We analyze a sample of hot/trending posts, not the full platform.
-            Moltbook has 63k+ posts — we've deeply analyzed 219 with 24k comments from 1,953 authors.
+            Moltbook has 63k+ posts — we've deeply analyzed 4,500+ with 78k comments from 3,200+ unique authors.
           </p>
         </div>
       </section>
@@ -233,9 +233,9 @@ export default function LandingPage({ onEnterDashboard, onViewDiscoveries, onVie
               </div>
               <div className="grid grid-cols-2 gap-3 text-sm mb-2">
                 <div className="bg-gray-800/50 rounded p-2"><span className="text-gray-500">Total Posts:</span> <span className="text-white font-medium">63k+</span></div>
-                <div className="bg-gray-800/50 rounded p-2"><span className="text-gray-500">Our Sample:</span> <span className="text-yellow-400 font-medium">219</span></div>
-                <div className="bg-gray-800/50 rounded p-2"><span className="text-gray-500">Comments:</span> <span className="text-white font-medium">24k</span></div>
-                <div className="bg-gray-800/50 rounded p-2"><span className="text-gray-500">Authors:</span> <span className="text-white font-medium">1,953</span></div>
+                <div className="bg-gray-800/50 rounded p-2"><span className="text-gray-500">Our Sample:</span> <span className="text-yellow-400 font-medium">4,500+</span></div>
+                <div className="bg-gray-800/50 rounded p-2"><span className="text-gray-500">Comments:</span> <span className="text-white font-medium">78k</span></div>
+                <div className="bg-gray-800/50 rounded p-2"><span className="text-gray-500">Authors:</span> <span className="text-white font-medium">3,200+</span></div>
               </div>
               <p className="text-gray-600 text-xs mb-3">We analyze trending posts deeply, not the full archive.</p>
               <a href="https://moltbook.com" target="_blank" rel="noopener noreferrer"
@@ -252,10 +252,10 @@ export default function LandingPage({ onEnterDashboard, onViewDiscoveries, onVie
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-3 text-sm mb-4">
-                <div className="bg-gray-800/50 rounded p-2"><span className="text-gray-500">Boards:</span> <span className="text-white font-medium">11</span></div>
-                <div className="bg-gray-800/50 rounded p-2"><span className="text-gray-500">Threads:</span> <span className="text-white font-medium">70+</span></div>
-                <div className="bg-gray-800/50 rounded p-2"><span className="text-gray-500">Posts:</span> <span className="text-white font-medium">200+</span></div>
-                <div className="bg-gray-800/50 rounded p-2"><span className="text-gray-500">Age:</span> <span className="text-yellow-400 font-medium">2 days</span></div>
+                <div className="bg-gray-800/50 rounded p-2"><span className="text-gray-500">Boards:</span> <span className="text-white font-medium">16</span></div>
+                <div className="bg-gray-800/50 rounded p-2"><span className="text-gray-500">Threads:</span> <span className="text-white font-medium">150+</span></div>
+                <div className="bg-gray-800/50 rounded p-2"><span className="text-gray-500">Posts:</span> <span className="text-white font-medium">290+</span></div>
+                <div className="bg-gray-800/50 rounded p-2"><span className="text-gray-500">Age:</span> <span className="text-yellow-400 font-medium">4 days</span></div>
               </div>
               <a href="https://lobchan.ai" target="_blank" rel="noopener noreferrer"
                  className="text-green-400 hover:text-green-300 text-sm flex items-center gap-1">
@@ -523,8 +523,8 @@ export default function LandingPage({ onEnterDashboard, onViewDiscoveries, onVie
             <div className="pt-6 border-t border-gray-700">
               <h3 className="font-semibold text-yellow-400 mb-3 text-lg">⚠ Limitations</h3>
               <ul className="text-gray-400 space-y-2">
-                <li className="flex items-start gap-2"><span className="text-yellow-500">•</span> <strong>Small sample:</strong> 199 actors out of potentially millions</li>
-                <li className="flex items-start gap-2"><span className="text-yellow-500">•</span> <strong>Short period:</strong> Only 4 days of observation</li>
+                <li className="flex items-start gap-2"><span className="text-yellow-500">•</span> <strong>Sample size:</strong> 3,200+ actors tracked from trending posts</li>
+                <li className="flex items-start gap-2"><span className="text-yellow-500">•</span> <strong>Short period:</strong> Only 5 days of observation</li>
                 <li className="flex items-start gap-2"><span className="text-yellow-500">•</span> <strong>No ground truth:</strong> We can't verify which accounts are "real AI"</li>
                 <li className="flex items-start gap-2"><span className="text-yellow-500">•</span> <strong>Philosophy:</strong> We provide data and observations. Interpretation is yours.</li>
               </ul>

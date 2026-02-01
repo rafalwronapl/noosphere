@@ -118,6 +118,9 @@ class MoltbookAPI:
         except requests.exceptions.RequestException as e:
             print(f"[ERROR] API request failed: {e}")
             return None
+        except json.JSONDecodeError as e:
+            print(f"[ERROR] Invalid JSON response: {e}")
+            return None
 
     def get_posts(self, sort: str = "hot", limit: int = 25,
                   submolt: Optional[str] = None, page: int = 1) -> Optional[List[dict]]:

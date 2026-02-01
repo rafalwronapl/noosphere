@@ -637,7 +637,7 @@ def generate_report_markdown(stats, themes, top_actors, conflicts, memes, reputa
     report.append("")
     report.append("| Topic | Memes | Trend |")
     report.append("|-------|-------|-------|")
-    for i, (theme, count) in enumerate(themes[:5]):
+    for i, (theme, count) in enumerate((themes or [])[:5]):
         trend = '↑↑' if i == 0 else ('↑' if count > 1000 else '→')
         report.append(f"| {theme} | {count:,} | {trend} |")
     report.append("")

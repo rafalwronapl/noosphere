@@ -101,7 +101,7 @@ def get_featured_agent() -> Optional[dict]:
                 author,
                 COUNT(*) as post_count,
                 SUM(upvotes) as total_upvotes,
-                SUM(comments_count) as total_comments,
+                SUM(comment_count) as total_comments,
                 AVG(upvotes - downvotes) as avg_score
             FROM posts
             WHERE created_at > ? AND author IS NOT NULL
@@ -138,7 +138,7 @@ def get_featured_agent() -> Optional[dict]:
                     MIN(created_at) as first_seen,
                     MAX(created_at) as last_seen,
                     SUM(upvotes) as total_upvotes,
-                    SUM(comments_count) as total_comments
+                    SUM(comment_count) as total_comments
                 FROM posts
                 WHERE author = ?
             """, (chosen[0],))
@@ -147,10 +147,10 @@ def get_featured_agent() -> Optional[dict]:
 
             # Get a notable post
             cursor.execute("""
-                SELECT title, content, upvotes, comments_count
+                SELECT title, content, upvotes, comment_count
                 FROM posts
                 WHERE author = ?
-                ORDER BY (upvotes + comments_count * 2) DESC
+                ORDER BY (upvotes + comment_count * 2) DESC
                 LIMIT 1
             """, (chosen[0],))
             notable_post = cursor.fetchone()
@@ -215,10 +215,10 @@ def api_discoveries():
                       query_lower in d.get('title', '').lower() or
                       query_lower in d.get('description', '').lower()]
 
-    # Pagination
+    # Pagination with validation
     try:
-        limit = min(int(request.args.get('limit', 50)), 100)
-        offset = int(request.args.get('offset', 0))
+        limit = max(1, min(int(request.args.get('limit', 50)), 100))
+        offset = max(0, int(request.args.get('offset', 0)))
     except ValueError:
         limit, offset = 50, 0
 
