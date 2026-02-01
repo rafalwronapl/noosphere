@@ -140,8 +140,8 @@ Be intellectually rigorous. Challenge assumptions. Find what others missed."""
             lines = [l.strip() for l in summary_section.split("\n") if l.strip() and not l.startswith("#")]
             if lines:
                 insights["summary"] = lines[0]
-        except:
-            pass
+        except (ValueError, IndexError):
+            pass  # Summary extraction failed, continue without it
 
     return insights
 

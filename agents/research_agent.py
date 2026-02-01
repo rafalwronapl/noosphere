@@ -27,7 +27,7 @@ from config import setup_logging, DB_PATH
 from openrouter_client import call_kimi
 
 sys.path.insert(0, str(Path(__file__).parent))
-from agent_council import AgentCouncil
+from guardian import Guardian
 
 logger = setup_logging("research_agent")
 
@@ -61,7 +61,7 @@ class ResearchAgent:
 
     def __init__(self, db_path: Path = DB_PATH):
         self.db_path = db_path
-        self.council = AgentCouncil(db_path)
+        self.guardian = Guardian()
         self._init_db()
 
     def _init_db(self):
@@ -377,7 +377,7 @@ Format as JSON: {{"title": "...", "description": "...", "category": "...", "sign
         return finding_id
 
     def run_review(self, finding_id: int) -> dict:
-        """Run Council review on a finding."""
+        """Run Guardian review on a finding."""
         conn = sqlite3.connect(self.db_path)
         cursor = conn.cursor()
 
@@ -393,50 +393,31 @@ Format as JSON: {{"title": "...", "description": "...", "category": "...", "sign
             return {"error": f"Finding #{finding_id} not found or not pending"}
 
         title, description, evidence, category, significance = row
-        conn.close()
 
-        # Prepare content for deliberation
-        content = f"""Research Finding for Review:
+        # Prepare content for review
+        content = f"{description}\n\nEvidence:\n{evidence}"
 
-Title: {title}
-Category: {category}
-Significance: {significance}
+        logger.info(f"Running Guardian review for finding #{finding_id}")
+        result = self.guardian.check_post(title, content)
 
-Description:
-{description}
-
-Evidence:
-{evidence}
-"""
-
-        logger.info(f"Running Council review for finding #{finding_id}")
-        decision, deliberation_id = self.council.deliberate_with_id(
-            topic=f"Research Finding: {title[:50]}",
-            content=content
-        )
-
-        # Update status
-        conn = sqlite3.connect(self.db_path)
-        cursor = conn.cursor()
-
-        new_status = "approved" if decision.final_decision == "publish" else "rejected"
+        new_status = "approved" if result.approved else "rejected"
 
         cursor.execute("""
             UPDATE research_findings
-            SET status = ?, deliberation_id = ?, reviewed_at = CURRENT_TIMESTAMP
+            SET status = ?, reviewed_at = CURRENT_TIMESTAMP
             WHERE id = ?
-        """, (new_status, deliberation_id, finding_id))
+        """, (new_status, finding_id))
 
         conn.commit()
         conn.close()
 
-        logger.info(f"Finding #{finding_id}: {new_status.upper()}")
+        logger.info(f"Finding #{finding_id}: {new_status.upper()} - {result.reason}")
 
         return {
             "finding_id": finding_id,
             "status": new_status,
-            "decision": decision.final_decision,
-            "consensus": decision.consensus_summary
+            "approved": result.approved,
+            "reason": result.reason
         }
 
     def run_research_cycle(self) -> dict:

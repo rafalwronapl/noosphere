@@ -67,7 +67,7 @@ function DiscoveryDetail({ discovery, onBack }) {
         </div>
 
         <div className="flex flex-wrap gap-2 mt-8 pt-8 border-t border-gray-700">
-          {discovery.tags.split(',').map(tag => (
+          {discovery.tags && discovery.tags.split(',').map(tag => (
             <span key={tag} className="px-3 py-1 bg-gray-700 text-gray-300 rounded-full">
               #{tag.trim()}
             </span>

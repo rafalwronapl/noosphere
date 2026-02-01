@@ -18,3 +18,10 @@ pytest>=7.0.0
 # Optional: for advanced analysis
 # networkx>=3.0
 # matplotlib>=3.7.0
+
+# Optional: for Twitter integration
+# tweepy>=4.14.0
+
+# Optional: for REST API server
+# flask>=3.0.0
+# flask-cors>=4.0.0

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Download, ExternalLink, ChevronRight, MessageCircle, Database, FileText, AlertCircle, Eye, Users, Shield, Network, Zap, TrendingUp, Clock } from 'lucide-react';
+import { FeaturedAgent } from './components/FeaturedAgent';
 
 export default function LandingPage({ onEnterDashboard, onViewDiscoveries, onViewFeedback, stats }) {
   const dataDate = stats?.lastUpdate?.split(' ')[0] || '2026-02-01';
@@ -262,6 +263,11 @@ export default function LandingPage({ onEnterDashboard, onViewDiscoveries, onVie
               </a>
             </div>
           </div>
+        </section>
+
+        {/* Featured Agent */}
+        <section className="mb-16">
+          <FeaturedAgent apiUrl="/api/v1" />
         </section>
 
         {/* Top Posts */}

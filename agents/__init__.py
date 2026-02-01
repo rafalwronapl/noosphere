@@ -1,22 +1,24 @@
 """
-Moltbook Observatory - Agent System
-====================================
+Noosphere Project - Agent System
+=================================
 
 Agent Architecture:
-- AgentCouncil: Internal deliberation (5 agents review before publication)
-- SecurityMonitor: Continuous threat detection
-- PublicationCoordinator: Manages pipeline from analysis to publication
-- ResearchCompanion: Daily briefings and research assistance
+- Guardian: Content moderation for social posts
+- InsightFinder: Discovers patterns in daily reports (Kimi)
+- MoltbookAgent: Active participant on Moltbook + social listening
+- TwitterAgent: Twitter presence management
+- ResearchAgent: Automated pattern analysis
+- PublicationCoordinator: Pipeline from findings to publication
 
 Flow:
-1. Data collection (scanner scripts)
-2. Analysis (analyst scripts)
-3. Findings → ResearchCompanion
-4. Review → AgentCouncil deliberation
-5. Security check → SecurityMonitor
-6. Publication → PublicationCoordinator
+1. Scanner → collects data from Moltbook
+2. ResearchAgent → analyzes patterns, generates findings
+3. InsightFinder → reads daily reports, finds hidden insights
+4. PublicationCoordinator → manages publication pipeline
+5. Guardian → approves content for MoltbookAgent/TwitterAgent
+6. MoltbookAgent/TwitterAgent → publishes to platforms
 
-All public outputs go through council review.
+All social posts go through Guardian review.
 """
 
 from pathlib import Path
@@ -26,8 +28,10 @@ AGENTS_DIR = Path(__file__).parent
 
 # List available agents
 AVAILABLE_AGENTS = [
-    "research_companion",   # Research assistance, daily briefings
-    "agent_council",        # Multi-agent deliberation system
-    "security_monitor",     # Threat detection and monitoring
-    "publication_coordinator",  # Publication pipeline management
+    "guardian",               # Content moderation
+    "insight_finder",         # Pattern discovery (Kimi)
+    "moltbook_agent",         # Moltbook participation + listening
+    "twitter_agent",          # Twitter presence
+    "research_agent",         # Automated analysis
+    "publication_coordinator", # Publication pipeline
 ]

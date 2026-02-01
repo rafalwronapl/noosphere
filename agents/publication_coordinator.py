@@ -32,8 +32,7 @@ from openrouter_client import call_kimi
 
 # Import our agents
 sys.path.insert(0, str(Path(__file__).parent))
-from agent_council import AgentCouncil, AgentRole
-from security_monitor import SecurityMonitor
+from guardian import Guardian
 
 logger = setup_logging("publication_coordinator")
 
@@ -68,8 +67,7 @@ class PublicationCoordinator:
 
     def __init__(self, db_path: Path = DB_PATH):
         self.db_path = db_path
-        self.council = AgentCouncil(db_path)
-        self.security = SecurityMonitor(db_path)
+        self.guardian = Guardian()
         self._init_db()
 
     def _init_db(self):
@@ -140,80 +138,60 @@ class PublicationCoordinator:
         logger.info(f"Publication #{pub_id} submitted for review: {title}")
         return pub_id
 
-    def run_deliberation(self, pub_id: int) -> dict:
+    def review_publication(self, pub_id: int) -> dict:
         """
-        Run council deliberation on a pending publication.
+        Review a pending publication using Guardian.
+        Simplified flow: Guardian approves or rejects.
         """
-        conn = None
-        try:
-            conn = sqlite3.connect(self.db_path)
-            cursor = conn.cursor()
+        conn = sqlite3.connect(self.db_path)
+        cursor = conn.cursor()
 
-            cursor.execute("""
-                SELECT title, content, category FROM publications
-                WHERE id = ? AND status = ?
-            """, (pub_id, PublicationStatus.PENDING_REVIEW.value))
+        cursor.execute("""
+            SELECT title, content, category FROM publications
+            WHERE id = ? AND status = ?
+        """, (pub_id, PublicationStatus.PENDING_REVIEW.value))
 
-            row = cursor.fetchone()
-            if not row:
-                return {"error": f"Publication #{pub_id} not found or not pending"}
+        row = cursor.fetchone()
+        if not row:
+            conn.close()
+            return {"error": f"Publication #{pub_id} not found or not pending"}
 
-            title, content, category = row
+        title, content, category = row
 
-            # Update status
-            cursor.execute("""
-                UPDATE publications SET status = ?, updated_at = CURRENT_TIMESTAMP
-                WHERE id = ?
-            """, (PublicationStatus.IN_DELIBERATION.value, pub_id))
+        # Run Guardian review
+        logger.info(f"Guardian reviewing publication #{pub_id}")
+        result = self.guardian.check_post(title, content)
 
-            cursor.execute("""
-                INSERT INTO publication_log (publication_id, action, actor)
-                VALUES (?, ?, ?)
-            """, (pub_id, "deliberation_started", "council"))
+        new_status = PublicationStatus.APPROVED.value if result.approved else PublicationStatus.REJECTED.value
+        decision = "approved" if result.approved else "rejected"
 
-            conn.commit()
-        finally:
-            if conn:
-                conn.close()
+        cursor.execute("""
+            UPDATE publications
+            SET status = ?, updated_at = CURRENT_TIMESTAMP
+            WHERE id = ?
+        """, (new_status, pub_id))
 
-        # Run deliberation (outside of DB transaction)
-        logger.info(f"Starting deliberation for publication #{pub_id}")
-        decision, deliberation_id = self.council.deliberate_with_id(title, content)
+        cursor.execute("""
+            INSERT INTO publication_log (publication_id, action, actor, notes)
+            VALUES (?, ?, ?, ?)
+        """, (pub_id, f"review_{decision}", "guardian", result.reason[:500] if result.reason else ""))
 
-        # Update with result
-        conn = None
-        try:
-            conn = sqlite3.connect(self.db_path)
-            cursor = conn.cursor()
+        conn.commit()
+        conn.close()
 
-            new_status = (PublicationStatus.APPROVED.value if decision.final_decision == "publish"
-                          else PublicationStatus.REJECTED.value)
-
-            cursor.execute("""
-                UPDATE publications
-                SET status = ?, deliberation_id = ?, updated_at = CURRENT_TIMESTAMP
-                WHERE id = ?
-            """, (new_status, deliberation_id, pub_id))
-
-            cursor.execute("""
-                INSERT INTO publication_log (publication_id, action, actor, notes)
-                VALUES (?, ?, ?, ?)
-            """, (pub_id, f"deliberation_complete_{decision.final_decision}", "council",
-                  decision.consensus_summary[:500]))
-
-            conn.commit()
-        finally:
-            if conn:
-                conn.close()
-
-        logger.info(f"Deliberation complete: {decision.final_decision.upper()}")
+        logger.info(f"Review complete: {decision.upper()} - {result.reason}")
 
         return {
             "publication_id": pub_id,
-            "decision": decision.final_decision,
-            "consensus": decision.consensus_summary,
-            "votes": {v.agent.value: v.approve for v in decision.votes}
+            "decision": decision,
+            "reason": result.reason,
+            "flags": result.flags
         }
+
+    # Alias for backwards compatibility
+    def run_deliberation(self, pub_id: int) -> dict:
+        """Alias for review_publication (backwards compatibility)."""
+        return self.review_publication(pub_id)
 
     def publish(self, pub_id: int) -> dict:
         """
@@ -235,11 +213,11 @@ class PublicationCoordinator:
         title, content, category, targets_json = row
         targets = json.loads(targets_json) if targets_json else ["website"]
 
-        # Final security check
-        is_safe, security_note = self.security.council.quick_security_check(content)
-        if not is_safe:
-            logger.warning(f"Security blocked publication #{pub_id}: {security_note}")
-            return {"error": "Security check failed", "details": security_note}
+        # Final Guardian check before publish
+        guardian_result = self.guardian.check_post(title, content)
+        if not guardian_result.approved:
+            logger.warning(f"Guardian blocked publication #{pub_id}: {guardian_result.reason}")
+            return {"error": "Guardian check failed", "details": guardian_result.reason}
 
         results = {}
 

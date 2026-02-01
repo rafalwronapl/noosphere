@@ -27,9 +27,9 @@ sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
 from config import setup_logging, DB_PATH, API_KEYS
 from openrouter_client import call_kimi
 
-# Import council for approval
+# Import guardian for approval
 sys.path.insert(0, str(Path(__file__).parent))
-from agent_council import AgentCouncil
+from guardian import Guardian
 
 logger = setup_logging("twitter_agent")
 
@@ -63,12 +63,12 @@ class Tweet:
 class TwitterAgent:
     """
     Agent for managing Twitter presence.
-    All public posts require Council approval.
+    All public posts require Guardian approval.
     """
 
     def __init__(self, db_path: Path = DB_PATH):
         self.db_path = db_path
-        self.council = AgentCouncil(db_path)
+        self.guardian = Guardian()
         self._init_db()
 
     def _init_db(self):
@@ -288,37 +288,29 @@ If they're critical, acknowledge valid points.
             return {"error": f"Tweet #{tweet_id} not found or not pending"}
 
         content, tweet_type = row
-        conn.close()
 
-        # Run deliberation
-        logger.info(f"Running Council approval for tweet #{tweet_id}")
-        decision, deliberation_id = self.council.deliberate_with_id(
-            topic=f"Twitter Post ({tweet_type})",
-            content=f"Proposed tweet:\n\n{content}\n\nType: {tweet_type}"
-        )
+        # Run Guardian approval
+        logger.info(f"Running Guardian approval for tweet #{tweet_id}")
+        result = self.guardian.check_tweet(content)
 
-        # Update status
-        conn = sqlite3.connect(self.db_path)
-        cursor = conn.cursor()
-
-        new_status = "approved" if decision.final_decision == "publish" else "rejected"
+        new_status = "approved" if result.approved else "rejected"
 
         cursor.execute("""
             UPDATE twitter_queue
-            SET status = ?, deliberation_id = ?, approved_at = CURRENT_TIMESTAMP
+            SET status = ?, approved_at = CURRENT_TIMESTAMP
             WHERE id = ?
-        """, (new_status, deliberation_id, tweet_id))
+        """, (new_status, tweet_id))
 
         conn.commit()
         conn.close()
 
-        logger.info(f"Tweet #{tweet_id}: {new_status.upper()}")
+        logger.info(f"Tweet #{tweet_id}: {new_status.upper()} - {result.reason}")
 
         return {
             "tweet_id": tweet_id,
             "status": new_status,
-            "decision": decision.final_decision,
-            "consensus": decision.consensus_summary
+            "approved": result.approved,
+            "reason": result.reason
         }
 
     def publish_tweet(self, tweet_id: int) -> dict:
