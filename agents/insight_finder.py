@@ -17,42 +17,16 @@ from typing import Optional
 
 sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
 from config import setup_logging, PROJECT_ROOT
+from openrouter_client import call_kimi
 
 logger = setup_logging("insight_finder")
 
-# OpenRouter API for Opus 4.5
-import requests
-import os
-
-OPENROUTER_API_KEY = os.environ.get("OPENROUTER_API_KEY", "")
-OPUS_MODEL = "anthropic/claude-opus-4-5-20251101"
+MODEL = "moonshotai/kimi-k2.5"  # Using Kimi K2.5 (fast, cheap, good)
 
 
-def call_opus(prompt: str, max_tokens: int = 2000) -> dict:
-    """Call Claude Opus 4.5 via OpenRouter."""
-    if not OPENROUTER_API_KEY:
-        return {"error": "OPENROUTER_API_KEY not set"}
-
-    try:
-        response = requests.post(
-            "https://openrouter.ai/api/v1/chat/completions",
-            headers={
-                "Authorization": f"Bearer {OPENROUTER_API_KEY}",
-                "Content-Type": "application/json",
-            },
-            json={
-                "model": OPUS_MODEL,
-                "messages": [{"role": "user", "content": prompt}],
-                "max_tokens": max_tokens,
-            },
-            timeout=120
-        )
-        response.raise_for_status()
-        data = response.json()
-        return {"content": data["choices"][0]["message"]["content"]}
-    except Exception as e:
-        logger.error(f"Opus API error: {e}")
-        return {"error": str(e)}
+def call_model(prompt: str, max_tokens: int = 2000) -> dict:
+    """Call LLM via OpenRouter (Kimi K2.5 for cost efficiency)."""
+    return call_kimi(prompt, max_tokens=max_tokens)
 
 
 def find_insights(report_path: Path, raw_data_dir: Optional[Path] = None) -> dict:
@@ -143,7 +117,7 @@ FORMAT YOUR RESPONSE AS:
 Be intellectually rigorous. Challenge assumptions. Find what others missed."""
 
     logger.info("Calling Opus 4.5 for deep analysis...")
-    result = call_opus(prompt, max_tokens=2000)
+    result = call_model(prompt, max_tokens=2000)
 
     if "error" in result:
         return {"error": result["error"], "insights": None}
@@ -154,7 +128,7 @@ Be intellectually rigorous. Challenge assumptions. Find what others missed."""
     insights = {
         "raw_analysis": insights_text,
         "generated_at": datetime.now().isoformat(),
-        "model": OPUS_MODEL,
+        "model": MODEL,
         "report_analyzed": str(report_path)
     }
 
