@@ -543,7 +543,7 @@ export default function LandingPage({ onEnterDashboard, onViewDiscoveries, onVie
                      className="bg-gray-800 hover:bg-gray-700 px-4 py-2 rounded-lg flex items-center gap-2 text-gray-300">
                     <span>✉️</span> Email Us
                   </a>
-                  <a href="https://github.com/rafalprzewozny/noosphere" target="_blank" rel="noopener noreferrer"
+                  <a href="https://github.com/rafalwronapl/noosphere" target="_blank" rel="noopener noreferrer"
                      className="bg-gray-800 hover:bg-gray-700 px-4 py-2 rounded-lg flex items-center gap-2 text-gray-300">
                     <span>📂</span> Source Code
                   </a>
@@ -551,7 +551,7 @@ export default function LandingPage({ onEnterDashboard, onViewDiscoveries, onVie
                      className="bg-gray-800 hover:bg-gray-700 px-4 py-2 rounded-lg flex items-center gap-2 text-gray-300">
                     <span>🐦</span> @NoosphereProj
                   </a>
-                  <a href="https://moltbook.com/u/NoosphereProject" target="_blank" rel="noopener noreferrer"
+                  <a href="https://moltbook.com/u/Noosphere_Observer" target="_blank" rel="noopener noreferrer"
                      className="bg-gray-800 hover:bg-gray-700 px-4 py-2 rounded-lg flex items-center gap-2 text-gray-300">
                     <span>📘</span> Moltbook Profile
                   </a>
@@ -586,7 +586,7 @@ export default function LandingPage({ onEnterDashboard, onViewDiscoveries, onVie
                 <h3 className="font-semibold text-purple-400 mb-3">📡 How to reach us</h3>
                 <ul className="text-gray-400 space-y-2 text-sm">
                   <li className="flex items-start gap-2"><span className="text-purple-400">→</span> <strong>Email:</strong> noosphereproject@proton.me</li>
-                  <li className="flex items-start gap-2"><span className="text-purple-400">→</span> <strong>Moltbook:</strong> @NoosphereProject</li>
+                  <li className="flex items-start gap-2"><span className="text-purple-400">→</span> <strong>Moltbook:</strong> @Noosphere_Observer</li>
                   <li className="flex items-start gap-2"><span className="text-purple-400">→</span> <strong>Twitter:</strong> @NoosphereProj</li>
                   <li className="flex items-start gap-2"><span className="text-purple-400">→</span> <strong>Feedback form:</strong> Button below</li>
                 </ul>
@@ -643,7 +643,7 @@ export default function LandingPage({ onEnterDashboard, onViewDiscoveries, onVie
                  className="text-gray-500 hover:text-white flex items-center gap-1">
                 <span>✉️</span> Email
               </a>
-              <a href="https://github.com/rafalprzewozny/noosphere" target="_blank" rel="noopener noreferrer"
+              <a href="https://github.com/rafalwronapl/noosphere" target="_blank" rel="noopener noreferrer"
                  className="text-gray-500 hover:text-white flex items-center gap-1">
                 <span>📂</span> GitHub
               </a>
@@ -651,7 +651,7 @@ export default function LandingPage({ onEnterDashboard, onViewDiscoveries, onVie
                  className="text-gray-500 hover:text-white flex items-center gap-1">
                 <span>🐦</span> Twitter
               </a>
-              <a href="https://moltbook.com/u/NoosphereProject" target="_blank" rel="noopener noreferrer"
+              <a href="https://moltbook.com/u/Noosphere_Observer" target="_blank" rel="noopener noreferrer"
                  className="text-gray-500 hover:text-white flex items-center gap-1">
                 <span>📘</span> Moltbook
               </a>
