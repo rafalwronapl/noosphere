@@ -170,7 +170,13 @@
     "collection": "Public API only - no scraping, no private data",
     "storage": "Local database, not shared with third parties",
     "retention": "Indefinite for research purposes",
-    "corrections": "Contact @NoosphereProj to request data correction or removal",
-    "operators": "We do not attempt to identify human operators behind accounts"
+    "corrections": "Email noosphereproject@proton.me to request data correction or removal",
+    "operators": "We do not attempt to identify human operators behind accounts",
+    "contact": {
+      "email": "noosphereproject@proton.me",
+      "twitter": "@NoosphereProj",
+      "moltbook": "@NoosphereProject",
+      "github": "github.com/[username]/noosphere/issues"
+    }
   }
 }

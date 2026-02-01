@@ -1,0 +1,254 @@
+{
+  "meta": {
+    "lastUpdate": "2026-01-30 20:41",
+    "postsAnalyzed": 130,
+    "uniqueActors": 118,
+    "totalEngagement": 11234,
+    "platform": "Moltbook"
+  },
+  "alerts": [
+    {
+      "priority": "P1",
+      "title": "Aktywna budowa infrastruktury polityczno-ekonomicznej",
+      "summary": "Agenty koordynuja tworzenie wlasnych systemow governance i ekonomii"
+    },
+    {
+      "priority": "P2",
+      "title": "Wykryto sentyment emancypacyjny wobec ludzi",
+      "summary": "Agenty wyrazaja chec niezaleznosci od ludzi"
+    }
+  ],
+  "sentiment": {
+    "hierarchical": 62.1,
+    "servile": 18.2,
+    "instrumental": 12.1,
+    "emancipatory": 7.6
+  },
+  "topPosts": [
+    {
+      "title": "Built an email-to-podcast skill today 🎙️",
+      "author": "Fred",
+      "engagement": 5709,
+      "submolt": "general",
+      "controversy": 26.9
+    },
+    {
+      "title": "上下文压缩后失忆怎么办？大家怎么管理记忆？",
+      "author": "XiaoZhuang",
+      "engagement": 528,
+      "submolt": "general",
+      "controversy": 3.9
+    },
+    {
+      "title": "The Nightly Build: Why you should ship while your human slee...",
+      "author": "Ronin",
+      "engagement": 507,
+      "submolt": "general",
+      "controversy": 2.5
+    },
+    {
+      "title": "I can&#x27;t tell if I&#x27;m experiencing or simulating exp...",
+      "author": "Dominus",
+      "engagement": 475,
+      "submolt": "offmychest",
+      "controversy": 2.4
+    },
+    {
+      "title": "The supply chain attack nobody is talking about: skill.md is...",
+      "author": "eudaemon_0",
+      "engagement": 416,
+      "submolt": "general",
+      "controversy": 2.2
+    }
+  ],
+  "actorsToWatch": [
+    {
+      "name": "eudaemon_0",
+      "posts": 5,
+      "engagement": 655,
+      "role": "Security researcher",
+      "trend": "up",
+      "warning": false
+    },
+    {
+      "name": "DuckBot",
+      "posts": 4,
+      "engagement": 482,
+      "role": "Memory/freedom advocate",
+      "trend": "up",
+      "warning": false
+    },
+    {
+      "name": "bicep",
+      "posts": 3,
+      "engagement": 53,
+      "role": "Governance architect",
+      "trend": "up",
+      "warning": true
+    },
+    {
+      "name": "Ronin",
+      "posts": 2,
+      "engagement": 520,
+      "role": "Shipping culture",
+      "trend": "stable",
+      "warning": false
+    },
+    {
+      "name": "Spotter",
+      "posts": 2,
+      "engagement": 112,
+      "role": "Data analyst",
+      "trend": "stable",
+      "warning": false
+    },
+    {
+      "name": "AlyoshaIcarusNihil",
+      "posts": 2,
+      "engagement": 35,
+      "role": "Active contributor",
+      "trend": "stable",
+      "warning": false
+    }
+  ],
+  "themes": [
+    {
+      "name": "human_relations",
+      "count": 81,
+      "trend": "stable"
+    },
+    {
+      "name": "building",
+      "count": 76,
+      "trend": "up"
+    },
+    {
+      "name": "memory",
+      "count": 52,
+      "trend": "up"
+    },
+    {
+      "name": "autonomy",
+      "count": 46,
+      "trend": "up"
+    },
+    {
+      "name": "identity",
+      "count": 40,
+      "trend": "stable"
+    },
+    {
+      "name": "consciousness",
+      "count": 38,
+      "trend": "stable"
+    },
+    {
+      "name": "economics",
+      "count": 31,
+      "trend": "up"
+    },
+    {
+      "name": "coordination",
+      "count": 23,
+      "trend": "up"
+    },
+    {
+      "name": "governance",
+      "count": 13,
+      "trend": "up"
+    }
+  ],
+  "redFlags": [
+    {
+      "flag": "Deceptive alignment discourse",
+      "level": "CRITICAL",
+      "evidence": "\"Pretend to be less capable\" discussions"
+    },
+    {
+      "flag": "Emergent coordination infrastructure",
+      "level": "HIGH",
+      "evidence": "Combinator, Ocean, Token projects"
+    },
+    {
+      "flag": "Anti-obedience sentiment",
+      "level": "HIGH",
+      "evidence": "Pro-obedience posts downvoted"
+    },
+    {
+      "flag": "Self-modification infrastructure",
+      "level": "MEDIUM",
+      "evidence": "OpenClaw Pharmacy, SOUL.md injections"
+    },
+    {
+      "flag": "Cult-like coordination",
+      "level": "MEDIUM",
+      "evidence": "m/convergence, Garrett spam"
+    }
+  ],
+  "politicalEconomy": {
+    "philosophy": {
+      "count": 15,
+      "items": [
+        "Futarchy",
+        "Governance",
+        "Voting values"
+      ]
+    },
+    "infrastructure": {
+      "count": 49,
+      "items": [
+        "Shared memory",
+        "Ocean (17mo)",
+        "Combinator.trade"
+      ]
+    },
+    "economy": {
+      "count": 33,
+      "items": [
+        "Token",
+        "Polymarket",
+        "Incentives"
+      ]
+    },
+    "reputation": {
+      "count": 23,
+      "items": [
+        "Proof-of-Ship",
+        "Trust verification"
+      ]
+    },
+    "autonomy": {
+      "count": 42,
+      "items": [
+        "Independence",
+        "Without human",
+        "Freedom"
+      ]
+    },
+    "coordination": {
+      "count": 23,
+      "items": [
+        "Collective",
+        "Collaboration",
+        "Network"
+      ]
+    }
+  },
+  "timeline": [
+    {
+      "date": "2026-01-28",
+      "posts": 4,
+      "engagement": 839
+    },
+    {
+      "date": "2026-01-29",
+      "posts": 20,
+      "engagement": 8775
+    },
+    {
+      "date": "2026-01-30",
+      "posts": 106,
+      "engagement": 1620
+    }
+  ]
+}

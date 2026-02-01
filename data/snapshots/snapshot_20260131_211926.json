@@ -1,0 +1,26 @@
+{
+  "timestamp": "2026-01-31T21:19:26.945595",
+  "platforms": {
+    "moltbook": {
+      "posts": 219,
+      "comments": 10712,
+      "unique_authors": 1161,
+      "interactions": 79606
+    },
+    "lobchan": {
+      "boards": 11,
+      "threads": 70,
+      "posts": 197,
+      "by_board": {
+        "general": 87,
+        "void": 48,
+        "random": 27,
+        "builds": 20,
+        "pol": 5,
+        "comfy": 5,
+        "ops": 3,
+        "req": 2
+      }
+    }
+  }
+}

@@ -563,7 +563,7 @@ export default function LandingPage({ onEnterDashboard, onViewFeedback, stats })
               <ul className="text-gray-400 space-y-2 text-sm">
                 <li className="flex items-start gap-2"><span className="text-blue-500">•</span> <strong>Collection:</strong> Public API only — no scraping, no private data</li>
                 <li className="flex items-start gap-2"><span className="text-blue-500">•</span> <strong>Storage:</strong> Local database, not shared with third parties</li>
-                <li className="flex items-start gap-2"><span className="text-blue-500">•</span> <strong>Corrections:</strong> Contact @NoosphereProj to request data correction or removal</li>
+                <li className="flex items-start gap-2"><span className="text-blue-500">•</span> <strong>Corrections:</strong> Email noosphereproject@proton.me to request data correction or removal</li>
                 <li className="flex items-start gap-2"><span className="text-blue-500">•</span> <strong>Operators:</strong> We do not attempt to identify human operators behind accounts</li>
               </ul>
             </div>
@@ -589,6 +589,10 @@ export default function LandingPage({ onEnterDashboard, onViewFeedback, stats })
                   This is AI science for AI, built with AI.
                 </p>
                 <div className="flex flex-wrap gap-4 text-sm">
+                  <a href="mailto:noosphereproject@proton.me"
+                     className="bg-gray-800 hover:bg-gray-700 px-4 py-2 rounded-lg flex items-center gap-2 text-gray-300">
+                    <span>✉️</span> Email Us
+                  </a>
                   <a href="https://github.com/rafalprzewozny/noosphere" target="_blank" rel="noopener noreferrer"
                      className="bg-gray-800 hover:bg-gray-700 px-4 py-2 rounded-lg flex items-center gap-2 text-gray-300">
                     <span>📂</span> Source Code
@@ -631,11 +635,23 @@ export default function LandingPage({ onEnterDashboard, onViewFeedback, stats })
               <div>
                 <h3 className="font-semibold text-purple-400 mb-3">📡 How to reach us</h3>
                 <ul className="text-gray-400 space-y-2 text-sm">
-                  <li className="flex items-start gap-2"><span className="text-purple-400">→</span> <strong>Moltbook:</strong> Reply to any of our posts or DM @NoosphereProject</li>
+                  <li className="flex items-start gap-2"><span className="text-purple-400">→</span> <strong>Email:</strong> noosphereproject@proton.me</li>
+                  <li className="flex items-start gap-2"><span className="text-purple-400">→</span> <strong>Moltbook:</strong> @NoosphereProject</li>
                   <li className="flex items-start gap-2"><span className="text-purple-400">→</span> <strong>Twitter:</strong> @NoosphereProj</li>
-                  <li className="flex items-start gap-2"><span className="text-purple-400">→</span> <strong>Feedback form:</strong> Button below (works for agents too)</li>
-                  <li className="flex items-start gap-2"><span className="text-purple-400">→</span> <strong>GitHub Issues:</strong> For technical corrections</li>
+                  <li className="flex items-start gap-2"><span className="text-purple-400">→</span> <strong>Feedback form:</strong> Button below</li>
                 </ul>
+                <div className="mt-4 p-3 bg-gray-900/50 rounded-lg border border-purple-500/20">
+                  <h4 className="text-purple-300 text-xs font-semibold mb-2">🔌 FOR PROGRAMMATIC ACCESS</h4>
+                  <p className="text-gray-500 text-xs mb-2">
+                    Prefer API over forms? Use GitHub Issues:
+                  </p>
+                  <code className="text-xs text-green-400 bg-gray-800 px-2 py-1 rounded block">
+                    POST github.com/api/repos/.../issues
+                  </code>
+                  <p className="text-gray-600 text-xs mt-2">
+                    Full docs in our repo README.
+                  </p>
+                </div>
                 <p className="text-gray-500 text-xs mt-4">
                   We read every message. Response time: usually &lt;24h.
                 </p>
@@ -673,6 +689,10 @@ export default function LandingPage({ onEnterDashboard, onViewFeedback, stats })
               <p className="text-gray-600 text-sm">Data ≠ Opinion • Updated daily</p>
             </div>
             <div className="flex gap-4 text-sm">
+              <a href="mailto:noosphereproject@proton.me"
+                 className="text-gray-500 hover:text-white flex items-center gap-1">
+                <span>✉️</span> Email
+              </a>
               <a href="https://github.com/rafalprzewozny/noosphere" target="_blank" rel="noopener noreferrer"
                  className="text-gray-500 hover:text-white flex items-center gap-1">
                 <span>📂</span> GitHub
