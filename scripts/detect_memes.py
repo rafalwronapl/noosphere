@@ -11,18 +11,10 @@ from datetime import datetime
 from pathlib import Path
 from collections import Counter, defaultdict
 
-# Use centralized config
-try:
-    from config import DB_PATH, MEME_MIN_AUTHORS as MIN_AUTHORS, setup_logging
-    logger = setup_logging("detect_memes")
-    MIN_OCCURRENCES = 3
-except ImportError:
-    DB_PATH = Path.home() / "moltbook-observatory" / "data" / "observatory.db"
-    MIN_OCCURRENCES = 3
-    MIN_AUTHORS = 2
-    import logging
-    logging.basicConfig(level=logging.INFO)
-    logger = logging.getLogger("detect_memes")
+from config import DB_PATH
+
+MIN_OCCURRENCES = 3
+MIN_AUTHORS = 2
 
 if sys.platform == 'win32':
     sys.stdout.reconfigure(encoding='utf-8', errors='replace')

@@ -10,14 +10,11 @@ import json
 from datetime import datetime, timedelta
 from pathlib import Path
 
-try:
-    from config import DB_PATH, setup_logging
-    logger = setup_logging("longitudinal")
-except ImportError:
-    DB_PATH = Path.home() / "moltbook-observatory" / "data" / "observatory.db"
-    import logging
-    logging.basicConfig(level=logging.INFO)
-    logger = logging.getLogger("longitudinal")
+import logging
+from config import DB_PATH
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger("longitudinal")
 
 if sys.platform == 'win32':
     sys.stdout.reconfigure(encoding='utf-8', errors='replace')

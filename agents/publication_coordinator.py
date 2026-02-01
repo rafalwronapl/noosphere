@@ -321,17 +321,76 @@ class PublicationCoordinator:
 
         return {"success": True, "id": new_discovery["id"]}
 
-    def _publish_to_moltbook(self, title: str, content: str) -> dict:
-        """Publish to Moltbook (placeholder - needs API implementation)."""
-        # TODO: Implement Moltbook API posting
-        logger.info("Moltbook publication: placeholder (API not implemented)")
-        return {"success": False, "message": "Moltbook API not implemented yet"}
+    def _publish_to_moltbook(self, title: str, content: str, submolt: str = "general") -> dict:
+        """Publish to Moltbook using MoltbookAgent."""
+        try:
+            from moltbook_agent import MoltbookAgent
+
+            agent = MoltbookAgent()
+            result = agent.post(title, content, submolt=submolt)
+
+            if result and result.get("success"):
+                post_data = result.get("post", {})
+                logger.info(f"Published to Moltbook: {post_data.get('id')}")
+                return {
+                    "success": True,
+                    "platform": "moltbook",
+                    "post_id": post_data.get("id"),
+                    "url": f"https://moltbook.com/post/{post_data.get('id')}"
+                }
+            elif result and result.get("error") == "blocked_by_guardian":
+                logger.warning(f"Moltbook post blocked by Guardian: {result.get('reason')}")
+                return {"success": False, "error": "blocked_by_guardian", "reason": result.get("reason")}
+            else:
+                logger.error(f"Moltbook publication failed: {result}")
+                return {"success": False, "error": str(result)}
+
+        except Exception as e:
+            logger.error(f"Moltbook publication error: {e}")
+            return {"success": False, "error": str(e)}
 
     def _publish_to_twitter(self, title: str, content: str) -> dict:
-        """Publish to Twitter (placeholder - needs API implementation)."""
-        # TODO: Implement Twitter API posting
-        logger.info("Twitter publication: placeholder (API not implemented)")
-        return {"success": False, "message": "Twitter API not implemented yet"}
+        """Publish to Twitter using TwitterAgent."""
+        try:
+            from twitter_agent import TwitterAgent
+
+            agent = TwitterAgent()
+
+            # Generate tweet from content (must be <280 chars)
+            tweet_content = self._format_for_twitter(title, content)
+
+            result = agent.queue_tweet(tweet_content, "announcement")
+
+            if result and result.get("success"):
+                logger.info(f"Queued tweet: {result.get('tweet_id')}")
+                return {
+                    "success": True,
+                    "platform": "twitter",
+                    "tweet_id": result.get("tweet_id"),
+                    "status": "queued"  # Still needs approval
+                }
+            else:
+                logger.error(f"Twitter queue failed: {result}")
+                return {"success": False, "error": str(result)}
+
+        except Exception as e:
+            logger.error(f"Twitter publication error: {e}")
+            return {"success": False, "error": str(e)}
+
+    def _format_for_twitter(self, title: str, content: str) -> str:
+        """Format content for Twitter (max 280 chars)."""
+        # Try to create a compelling tweet
+        base = f"{title}\n\n"
+        remaining = 280 - len(base) - 30  # Leave room for link
+
+        if remaining > 50:
+            # Extract first sentence or key point
+            first_line = content.split('\n')[0].strip()
+            if len(first_line) > remaining:
+                first_line = first_line[:remaining-3] + "..."
+            return f"{base}{first_line}\n\nhttps://noosphereproject.com"
+        else:
+            return f"{title[:240]}...\n\nhttps://noosphereproject.com"
 
     def get_queue(self) -> list:
         """Get current publication queue."""

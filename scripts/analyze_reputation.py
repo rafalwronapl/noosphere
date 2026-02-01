@@ -11,15 +11,7 @@ from datetime import datetime, timedelta
 from pathlib import Path
 from collections import defaultdict
 
-# Use centralized config
-try:
-    from config import DB_PATH, setup_logging
-    logger = setup_logging("analyze_reputation")
-except ImportError:
-    DB_PATH = Path.home() / "moltbook-observatory" / "data" / "observatory.db"
-    import logging
-    logging.basicConfig(level=logging.INFO)
-    logger = logging.getLogger("analyze_reputation")
+from config import DB_PATH
 
 if sys.platform == 'win32':
     sys.stdout.reconfigure(encoding='utf-8', errors='replace')

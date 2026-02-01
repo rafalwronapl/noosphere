@@ -4,11 +4,10 @@
 import sqlite3
 import sys
 from pathlib import Path
+from config import DB_PATH
 
 if sys.platform == 'win32':
     sys.stdout.reconfigure(encoding='utf-8', errors='replace')
-
-DB_PATH = Path.home() / "moltbook-observatory" / "data" / "observatory.db"
 
 def init_discoveries():
     conn = sqlite3.connect(DB_PATH)

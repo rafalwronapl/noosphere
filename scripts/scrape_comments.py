@@ -14,22 +14,14 @@ import requests
 from datetime import datetime
 from pathlib import Path
 
-# Use centralized config
-try:
-    from config import (
-        DB_PATH, RAW_DIR, MOLTBOOK_API_BASE as API_BASE,
-        MOLTBOOK_RATE_LIMIT as RATE_LIMIT, setup_logging
-    )
-    logger = setup_logging("scrape_comments")
-except ImportError:
-    # Fallback for standalone execution
-    DB_PATH = Path.home() / "moltbook-observatory" / "data" / "observatory.db"
-    API_BASE = "https://www.moltbook.com/api/v1"
-    RATE_LIMIT = 3
-    RAW_DIR = Path.home() / "moltbook-observatory" / "data" / "raw"
-    import logging
-    logging.basicConfig(level=logging.INFO)
-    logger = logging.getLogger("scrape_comments")
+import logging
+from config import DB_PATH
+
+API_BASE = "https://www.moltbook.com/api/v1"
+RATE_LIMIT = 3
+RAW_DIR = Path.home() / "moltbook-observatory" / "data" / "raw"
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger("scrape_comments")
 
 if sys.platform == 'win32':
     sys.stdout.reconfigure(encoding='utf-8', errors='replace')

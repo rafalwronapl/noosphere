@@ -21,8 +21,10 @@ from dataclasses import dataclass
 from typing import Optional
 import sys
 
+import os
+
 sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
-from config import setup_logging, DB_PATH
+from config import setup_logging, DB_PATH, API_KEYS
 from openrouter_client import call_kimi
 
 # Import council for approval
@@ -31,11 +33,19 @@ from agent_council import AgentCouncil
 
 logger = setup_logging("twitter_agent")
 
-# Twitter API placeholder - will need actual credentials
-TWITTER_API_KEY = None
-TWITTER_API_SECRET = None
-TWITTER_ACCESS_TOKEN = None
-TWITTER_ACCESS_SECRET = None
+# Twitter API credentials from environment/config
+TWITTER_API_KEY = API_KEYS.get("TWITTER_API_KEY", os.environ.get("TWITTER_API_KEY"))
+TWITTER_API_SECRET = API_KEYS.get("TWITTER_API_SECRET", os.environ.get("TWITTER_API_SECRET"))
+TWITTER_ACCESS_TOKEN = API_KEYS.get("TWITTER_ACCESS_TOKEN", os.environ.get("TWITTER_ACCESS_TOKEN"))
+TWITTER_ACCESS_SECRET = API_KEYS.get("TWITTER_ACCESS_SECRET", os.environ.get("TWITTER_ACCESS_SECRET"))
+
+# Check if tweepy is available
+try:
+    import tweepy
+    TWEEPY_AVAILABLE = True
+except ImportError:
+    TWEEPY_AVAILABLE = False
+    logger.warning("tweepy not installed - Twitter posting will be simulated")
 
 
 @dataclass
@@ -328,24 +338,36 @@ If they're critical, acknowledge valid points.
 
         content, tweet_type, in_reply_to = row
 
-        # TODO: Actual Twitter API call
-        # For now, just simulate
-        logger.info(f"WOULD PUBLISH: {content}")
+        logger.info(f"Publishing tweet: {content[:50]}...")
 
-        if not TWITTER_API_KEY:
+        if not TWITTER_API_KEY or not TWITTER_API_SECRET:
             logger.warning("Twitter API not configured - simulating publish")
-            twitter_id = f"simulated_{tweet_id}_{datetime.now().timestamp()}"
+            twitter_id = f"simulated_{tweet_id}_{int(datetime.now().timestamp())}"
+            result = {"success": True, "simulated": True, "twitter_id": twitter_id}
+        elif not TWEEPY_AVAILABLE:
+            logger.warning("tweepy not installed - simulating publish")
+            twitter_id = f"simulated_{tweet_id}_{int(datetime.now().timestamp())}"
             result = {"success": True, "simulated": True, "twitter_id": twitter_id}
         else:
-            # Real Twitter API call would go here
-            # import tweepy
-            # auth = tweepy.OAuthHandler(TWITTER_API_KEY, TWITTER_API_SECRET)
-            # auth.set_access_token(TWITTER_ACCESS_TOKEN, TWITTER_ACCESS_SECRET)
-            # api = tweepy.API(auth)
-            # status = api.update_status(content)
-            # twitter_id = status.id_str
-            twitter_id = None
-            result = {"success": False, "error": "Twitter API not implemented"}
+            # Real Twitter API call using tweepy
+            try:
+                auth = tweepy.OAuthHandler(TWITTER_API_KEY, TWITTER_API_SECRET)
+                auth.set_access_token(TWITTER_ACCESS_TOKEN, TWITTER_ACCESS_SECRET)
+                api = tweepy.API(auth)
+
+                if in_reply_to:
+                    status = api.update_status(content, in_reply_to_status_id=in_reply_to)
+                else:
+                    status = api.update_status(content)
+
+                twitter_id = status.id_str
+                result = {"success": True, "twitter_id": twitter_id}
+                logger.info(f"Tweet published: {twitter_id}")
+
+            except tweepy.TweepyException as e:
+                logger.error(f"Twitter API error: {e}")
+                twitter_id = None
+                result = {"success": False, "error": str(e)}
 
         # Update status
         cursor.execute("""

@@ -25,16 +25,9 @@ from datetime import datetime, timedelta
 from pathlib import Path
 from collections import Counter, defaultdict
 
-# Use centralized config
-try:
-    from config import DB_PATH, REPORTS_DIR, setup_logging
-    logger = setup_logging("daily_report")
-except ImportError:
-    DB_PATH = Path.home() / "moltbook-observatory" / "data" / "observatory.db"
-    REPORTS_DIR = Path.home() / "moltbook-observatory" / "reports"
-    import logging
-    logging.basicConfig(level=logging.INFO)
-    logger = logging.getLogger("daily_report")
+from config import DB_PATH
+
+REPORTS_DIR = Path.home() / "moltbook-observatory" / "reports"
 
 if sys.platform == 'win32':
     sys.stdout.reconfigure(encoding='utf-8', errors='replace')

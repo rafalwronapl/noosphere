@@ -27,12 +27,9 @@ def setup_encoding():
 # =============================================================================
 
 def get_db_path() -> Path:
-    """Get database path from config or fallback."""
-    try:
-        from config import DB_PATH
-        return DB_PATH
-    except ImportError:
-        return Path.home() / "moltbook-observatory" / "data" / "observatory.db"
+    """Get database path from config."""
+    from config import DB_PATH
+    return DB_PATH
 
 
 def get_db_connection(row_factory: bool = True) -> sqlite3.Connection:

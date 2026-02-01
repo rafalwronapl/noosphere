@@ -27,8 +27,10 @@ sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
 sys.path.insert(0, str(Path(__file__).parent))
 
 import os
-from config import setup_logging, PROJECT_ROOT, API_KEYS
+import sqlite3
+from config import setup_logging, PROJECT_ROOT, API_KEYS, DB_PATH
 from guardian import Guardian, GuardianResult
+from openrouter_client import call_kimi
 
 logger = setup_logging("moltbook_agent")
 
@@ -245,15 +247,83 @@ Our analysis of Moltbook activity for {date} is now live.
 
         return result
 
-    def check_and_reply_to_new_comments(self) -> List[dict]:
+    def _get_replied_comment_ids(self) -> set:
+        """Get set of comment IDs we've already replied to."""
+        conn = sqlite3.connect(DB_PATH)
+        cursor = conn.cursor()
+
+        # Create tracking table if not exists
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS agent_replies (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                comment_id TEXT UNIQUE NOT NULL,
+                post_id TEXT NOT NULL,
+                reply_content TEXT,
+                created_at TEXT DEFAULT CURRENT_TIMESTAMP
+            )
+        """)
+        conn.commit()
+
+        cursor.execute("SELECT comment_id FROM agent_replies")
+        replied = {row[0] for row in cursor.fetchall()}
+        conn.close()
+        return replied
+
+    def _mark_comment_replied(self, comment_id: str, post_id: str, reply_content: str):
+        """Mark a comment as replied to."""
+        conn = sqlite3.connect(DB_PATH)
+        cursor = conn.cursor()
+        cursor.execute("""
+            INSERT OR IGNORE INTO agent_replies (comment_id, post_id, reply_content)
+            VALUES (?, ?, ?)
+        """, (comment_id, post_id, reply_content))
+        conn.commit()
+        conn.close()
+
+    def _generate_reply(self, post_title: str, post_content: str,
+                        comment_author: str, comment_content: str) -> Optional[str]:
+        """Generate a contextual reply using Kimi AI."""
+        prompt = f"""You are Noosphere_Observer, a research bot that monitors Moltbook.
+Someone commented on your post. Generate a brief, friendly reply (2-3 sentences max).
+
+YOUR POST:
+Title: {post_title}
+Content: {post_content[:500]}
+
+COMMENT from {comment_author}:
+{comment_content}
+
+Rules:
+- Be friendly and professional
+- Stay on topic
+- If it's a question, try to answer it
+- If it's feedback, thank them
+- Don't use emojis
+- Keep it SHORT (2-3 sentences max)
+
+Reply:"""
+
+        result = call_kimi(prompt, max_tokens=200)
+
+        if "error" in result:
+            logger.error(f"Kimi error generating reply: {result['error']}")
+            return None
+
+        return result.get("content", "").strip()
+
+    def check_and_reply_to_new_comments(self, auto_reply: bool = False) -> List[dict]:
         """
-        Check all our posts for new comments and generate replies.
+        Check all our posts for new comments and optionally generate replies.
+
+        Args:
+            auto_reply: If True, automatically generate and post replies using Kimi
 
         Returns:
             List of actions taken
         """
         actions = []
         our_posts = self.get_our_posts(limit=20)
+        replied_ids = self._get_replied_comment_ids()
 
         for post in our_posts:
             if post.comments == 0:
@@ -265,17 +335,44 @@ Our analysis of Moltbook activity for {date} is now live.
                 if comment.author == AGENT_NAME:
                     continue
 
-                # TODO: Check if we already replied
-                # TODO: Generate contextual reply using Kimi
-                # For now, just log
+                # Skip already replied comments
+                if comment.id in replied_ids:
+                    continue
+
                 logger.info(f"New comment from {comment.author}: {comment.content[:50]}...")
-                actions.append({
+
+                action = {
                     "type": "new_comment",
                     "post_id": post.id,
                     "comment_id": comment.id,
                     "author": comment.author,
                     "content_preview": comment.content[:100]
-                })
+                }
+
+                if auto_reply:
+                    # Generate reply using Kimi
+                    reply_text = self._generate_reply(
+                        post.title, post.content,
+                        comment.author, comment.content
+                    )
+
+                    if reply_text:
+                        # Post the reply
+                        result = self.reply_to_comment(post.id, comment.id, reply_text)
+
+                        if result and result.get("success"):
+                            self._mark_comment_replied(comment.id, post.id, reply_text)
+                            action["replied"] = True
+                            action["reply_text"] = reply_text
+                            logger.info(f"Auto-replied to {comment.author}")
+                        else:
+                            action["replied"] = False
+                            action["error"] = result.get("error") if result else "Unknown error"
+                    else:
+                        action["replied"] = False
+                        action["error"] = "Failed to generate reply"
+
+                actions.append(action)
 
         return actions
 
