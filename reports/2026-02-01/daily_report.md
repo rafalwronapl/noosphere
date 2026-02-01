@@ -9,7 +9,7 @@
 
 ---
 
-## 1. Snapshot dnia
+## 1. Daily Snapshot
 
 ```
 Posts:        219
@@ -20,7 +20,7 @@ Engagement:   658,334
 Injections:   621
 ```
 
-### Zmiany (Δ od wczoraj)
+### Changes (Δ from yesterday)
 
 ```
 ΔPosts:       +0
@@ -46,7 +46,7 @@ Injections:   621
 
 ---
 
-## 3. Dominujące tematy
+## 3. Dominant Topics
 
 | Topic | Memes | Trend |
 |-------|-------|-------|
@@ -70,7 +70,7 @@ Injections:   621
 
 ---
 
-## 5. Struktura władzy (Top 10)
+## 5. Power Structure (Top 10)
 
 | Rank | Agent | Centrality | Posts | Comments |
 |------|-------|------------|-------|----------|
@@ -87,7 +87,7 @@ Injections:   621
 
 ---
 
-## 6. Ostatnie konflikty
+## 6. Recent Conflicts
 
 | Agents | Topic | Status |
 |--------|-------|--------|
@@ -111,7 +111,7 @@ Injections:   621
 
 ---
 
-## 8. Najbardziej wiralowe frazy
+## 8. Most Viral Phrases
 
 | Phrase | Authors | First Use |
 |--------|---------|-----------|
@@ -123,7 +123,7 @@ Injections:   621
 
 ---
 
-## 9. Liderzy reputacji
+## 9. Reputation Leaders
 
 | Agent | Score | Status |
 |-------|-------|--------|
@@ -137,9 +137,9 @@ Injections:   621
 
 ## 10. External Influence / Injections
 
-**Wykryte próby manipulacji: 621**
+**Detected manipulation attempts: 621**
 
-> ⚠️ ALERT: Wysoki poziom prób prompt injection.
+> ⚠️ ALERT: High level of prompt injection attempts.
 
 ---
 
@@ -171,7 +171,7 @@ Injections:   621
 
 ---
 
-## 13. Pytania otwarte
+## 13. Open Questions
 
 1. What drove today's engagement patterns?
 2. Are new arrivals organic or coordinated?
@@ -183,16 +183,16 @@ Injections:   621
 
 ## 14. Field Note
 
-*Subiektywna notatka terenowa badacza. Automatycznie wygenerowana, do edycji.*
+*Subjective field note from researcher. Auto-generated, editable.*
 
 - Central hub: eudaemon_0 (centrality 1.000). This actor bridges major community segments.
 - Cultural themes dominate over existential - community shifting from introspection to action.
 
-*— Observatory Research Team*
+*— Noosphere Project Research Team*
 
 ---
 
-## 15. Surowe dane
+## 15. Raw Data
 
 - [posts.csv](raw/posts.csv)
 - [network.csv](raw/network.csv)
@@ -202,7 +202,7 @@ Injections:   621
 
 ---
 
-*Wygenerowano: 2026-02-01 06:03*
-*Moltbook Observatory v4.2.0*
+*Generated: 2026-02-01 16:09*
+*Noosphere Project v4.2.0*
 
-**Data ≠ Opinion** — surowe dane w `/raw/`, interpretacja w Field Note.
+**Data ≠ Opinion** — raw data in `/raw/`, interpretation in Field Note.

@@ -1,18 +1,18 @@
-# Komentarz badacza
+# Researcher Commentary
 ## 2026-02-01
 
-*Ten plik zawiera subiektywną interpretację. Surowe dane w `/raw/`.*
+*This file contains subjective interpretation. Raw data in `/raw/`.*
 
 ---
 
-## Obserwacje
+## Observations
 
-<!-- Tutaj wpisz swoje obserwacje -->
+<!-- Enter your observations here -->
 
-## Hipotezy
+## Hypotheses
 
-<!-- Tutaj wpisz hipotezy do weryfikacji -->
+<!-- Enter hypotheses to verify -->
 
-## Pytania na jutro
+## Questions for Tomorrow
 
-<!-- Co sprawdzić w następnym raporcie? -->
+<!-- What to check in the next report? -->

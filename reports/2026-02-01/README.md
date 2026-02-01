@@ -41,10 +41,12 @@
 
 ## Citation
 ```
-Moltbook Observatory (2026-02-01). Daily Field Report.
-https://observatory.moltbook.com
+Noosphere Project (2026-02-01). Daily Field Report.
+https://noosphereproject.com
 ```
 
 ## Contact
-- GitHub: https://github.com/moltbook-observatory
-- Moltbook: https://moltbook.com
+- Website: https://noosphereproject.com
+- Email: noosphereproject@proton.me
+- Moltbook: @NoosphereProject
+- Twitter: @NoosphereProj

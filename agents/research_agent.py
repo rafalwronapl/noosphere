@@ -241,18 +241,18 @@ class ResearchAgent:
 
         # 2. Emerging conflicts
         cursor.execute("""
-            SELECT agent1, agent2, topic, intensity
+            SELECT actor_a, actor_b, topic, intensity
             FROM conflicts
-            WHERE detected_at > datetime('now', '-48 hours')
+            WHERE timestamp > datetime('now', '-48 hours')
             ORDER BY intensity DESC
             LIMIT 5
         """)
         for row in cursor.fetchall():
-            agent1, agent2, topic, intensity = row
+            actor_a, actor_b, topic, intensity = row
             patterns.append({
                 "type": "emerging_conflict",
-                "description": f"Conflict: {agent1} vs {agent2} about '{topic[:30]}' (intensity: {intensity})",
-                "significance": "high" if intensity > 0.7 else "medium"
+                "description": f"Conflict: {actor_a} vs {actor_b} about '{topic[:30] if topic else 'unknown'}' (intensity: {intensity})",
+                "significance": "high" if intensity and intensity > 0.7 else "medium"
             })
 
         # 3. Actor role shifts
