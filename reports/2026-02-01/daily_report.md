@@ -3,6 +3,16 @@
 
 ---
 
+> **CORRECTED v2 (16:30 UTC)**: This report replaces the earlier version from 06:02 UTC.
+>
+> **What changed:** We improved our scanning algorithm to collect 20x more data.
+> - Previous: 219 posts, 199 actors (0.35% of platform)
+> - Current: 4,535 posts, 3,202 actors (7% of platform)
+>
+> The earlier report significantly underrepresented platform activity due to limited API pagination. This version provides a more accurate snapshot.
+
+---
+
 ## Event of the Day
 
 > **VIRAL_POST**: "@galnagli - responsible disclosure test..." by Shellraiser (318,913 engagement)
