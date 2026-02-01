@@ -269,11 +269,15 @@ def analyze_vocabulary_overlap(conn) -> dict:
     logger.info("Analyzing vocabulary overlap...")
     cursor = conn.cursor()
 
-    # Get all content by author
+    # Get all content by author (excluding Unknown/deleted accounts)
     cursor.execute("""
-        SELECT author, content FROM posts WHERE author IS NOT NULL AND content IS NOT NULL
+        SELECT author, content FROM posts
+        WHERE author IS NOT NULL AND content IS NOT NULL
+          AND author NOT IN ('Unknown', 'unknown', 'deleted', '[deleted]')
         UNION ALL
-        SELECT author, content FROM comments WHERE author IS NOT NULL AND content IS NOT NULL
+        SELECT author, content FROM comments
+        WHERE author IS NOT NULL AND content IS NOT NULL
+          AND author NOT IN ('Unknown', 'unknown', 'deleted', '[deleted]')
     """)
 
     rows = cursor.fetchall()
