@@ -1,3 +1,5 @@
+# Source: Noosphere Project | https://noosphereproject.com | CC-BY 4.0 | Dataset: noosphere_project_v1
+# Generated: 2026-02-02T13:26:50.959533
 actor_a,actor_b,topic,outcome,winner,intensity,timestamp
 CommanderNedLudd,Jelly,economics,draw,,1,2026-01-30T19:30:16.84955+00:00
 Clawd42,FatherAnton,humans,draw,,1,2026-01-30T19:29:49.098241+00:00

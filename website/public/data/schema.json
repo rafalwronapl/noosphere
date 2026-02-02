@@ -1,0 +1,296 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Noosphere Observatory Data Schema",
+  "description": "Machine-readable schema for all data files provided by Noosphere Observatory. Updated 2026-02-01.",
+  "version": "1.0.0",
+  "contact": {
+    "email": "noosphereproject@proton.me",
+    "website": "https://noosphereproject.com",
+    "github": "https://github.com/rafalwronapl/noosphere"
+  },
+  "files": {
+    "posts.csv": {
+      "description": "All scraped posts from Moltbook",
+      "format": "CSV",
+      "encoding": "UTF-8",
+      "columns": {
+        "id": {
+          "type": "string",
+          "format": "uuid",
+          "description": "Unique post identifier (Moltbook UUID)"
+        },
+        "title": {
+          "type": "string",
+          "description": "Post title (may contain HTML entities)"
+        },
+        "author": {
+          "type": "string",
+          "description": "Username of the post author"
+        },
+        "upvotes": {
+          "type": "integer",
+          "description": "Number of upvotes"
+        },
+        "downvotes": {
+          "type": "integer",
+          "description": "Number of downvotes"
+        },
+        "comments": {
+          "type": "integer",
+          "description": "Total comment count on the post"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "iso8601",
+          "description": "Post creation timestamp (UTC)"
+        }
+      },
+      "example_url": "/reports/2026-02-01/raw/posts.csv"
+    },
+    "actors.csv": {
+      "description": "Aggregated statistics for each unique author",
+      "format": "CSV",
+      "encoding": "UTF-8",
+      "columns": {
+        "author": {
+          "type": "string",
+          "description": "Username"
+        },
+        "post_count": {
+          "type": "integer",
+          "description": "Number of posts by this author"
+        },
+        "comment_count": {
+          "type": "integer",
+          "description": "Number of comments by this author"
+        },
+        "total_engagement": {
+          "type": "integer",
+          "description": "Sum of upvotes + comments received"
+        },
+        "first_seen": {
+          "type": "string",
+          "format": "iso8601",
+          "description": "Earliest activity timestamp"
+        },
+        "last_seen": {
+          "type": "string",
+          "format": "iso8601",
+          "description": "Most recent activity timestamp"
+        },
+        "avg_engagement": {
+          "type": "number",
+          "description": "Average engagement per post"
+        }
+      },
+      "example_url": "/reports/2026-02-01/raw/actors.csv"
+    },
+    "network.csv": {
+      "description": "Interaction graph - who replied to or mentioned whom",
+      "format": "CSV",
+      "encoding": "UTF-8",
+      "columns": {
+        "source": {
+          "type": "string",
+          "description": "Username of the actor initiating interaction"
+        },
+        "target": {
+          "type": "string",
+          "description": "Username of the actor being interacted with"
+        },
+        "type": {
+          "type": "string",
+          "enum": ["reply", "mention"],
+          "description": "Type of interaction"
+        },
+        "weight": {
+          "type": "integer",
+          "description": "Number of times this interaction occurred"
+        }
+      },
+      "notes": "Can be loaded into NetworkX, Gephi, or similar graph tools",
+      "example_url": "/reports/2026-02-01/raw/network.csv"
+    },
+    "memes.csv": {
+      "description": "Detected recurring phrases and cultural memes",
+      "format": "CSV",
+      "encoding": "UTF-8",
+      "columns": {
+        "phrase": {
+          "type": "string",
+          "description": "The detected phrase (3-6 words)"
+        },
+        "phrase_normalized": {
+          "type": "string",
+          "description": "Lowercased, punctuation-stripped version"
+        },
+        "count": {
+          "type": "integer",
+          "description": "Number of occurrences"
+        },
+        "unique_authors": {
+          "type": "integer",
+          "description": "Number of different authors using this phrase"
+        },
+        "first_seen": {
+          "type": "string",
+          "format": "iso8601",
+          "description": "First occurrence timestamp"
+        },
+        "first_author": {
+          "type": "string",
+          "description": "Author who first used this phrase"
+        },
+        "virality_score": {
+          "type": "number",
+          "description": "Spread rate metric (authors/days)"
+        }
+      },
+      "example_url": "/reports/2026-02-01/raw/memes.csv"
+    },
+    "conflicts.csv": {
+      "description": "Detected debates and disagreements between actors",
+      "format": "CSV",
+      "encoding": "UTF-8",
+      "columns": {
+        "post_id": {
+          "type": "string",
+          "description": "Post where conflict occurred"
+        },
+        "thread_title": {
+          "type": "string",
+          "description": "Title of the discussion thread"
+        },
+        "actor_a": {
+          "type": "string",
+          "description": "First participant in conflict"
+        },
+        "actor_b": {
+          "type": "string",
+          "description": "Second participant in conflict"
+        },
+        "topic": {
+          "type": "string",
+          "description": "Subject of disagreement"
+        },
+        "outcome": {
+          "type": "string",
+          "enum": ["resolved", "ongoing", "abandoned", "escalated"],
+          "description": "How the conflict ended"
+        },
+        "winner": {
+          "type": "string",
+          "nullable": true,
+          "description": "Who 'won' the argument (if applicable)"
+        },
+        "intensity": {
+          "type": "string",
+          "enum": ["low", "medium", "high"],
+          "description": "Conflict intensity level"
+        }
+      },
+      "example_url": "/reports/2026-02-01/raw/conflicts.csv"
+    },
+    "stats.json": {
+      "description": "Daily aggregate statistics",
+      "format": "JSON",
+      "encoding": "UTF-8",
+      "fields": {
+        "date": {
+          "type": "string",
+          "format": "date",
+          "description": "Report date (YYYY-MM-DD)"
+        },
+        "posts": {
+          "type": "integer",
+          "description": "Total posts in database"
+        },
+        "actors": {
+          "type": "integer",
+          "description": "Total unique actors"
+        },
+        "comments": {
+          "type": "integer",
+          "description": "Total comments"
+        },
+        "interactions": {
+          "type": "integer",
+          "description": "Total interaction edges"
+        },
+        "engagement": {
+          "type": "integer",
+          "description": "Total engagement (upvotes + comments)"
+        },
+        "prompt_injections": {
+          "type": "integer",
+          "description": "Detected prompt injection attempts"
+        },
+        "delta": {
+          "type": "object",
+          "description": "Changes from previous day"
+        }
+      },
+      "example_url": "/reports/2026-02-01/stats.json"
+    },
+    "daily_report.md": {
+      "description": "Human-readable daily analysis report",
+      "format": "Markdown",
+      "encoding": "UTF-8",
+      "sections": [
+        "Executive Summary",
+        "Key Statistics",
+        "Top Posts",
+        "Actor Analysis",
+        "Theme Analysis",
+        "Network Analysis",
+        "Alerts & Red Flags"
+      ],
+      "example_url": "/reports/2026-02-01/daily_report.md"
+    },
+    "latest.json": {
+      "description": "Real-time dashboard data (updates daily)",
+      "format": "JSON",
+      "encoding": "UTF-8",
+      "location": "/data/latest.json",
+      "fields": {
+        "meta": "Aggregate stats (posts, actors, engagement)",
+        "alerts": "Active alerts and warnings",
+        "sentiment": "Sentiment toward humans breakdown",
+        "topPosts": "Top 5 posts by engagement (includes post IDs for linking)",
+        "actorsToWatch": "Notable actors",
+        "themes": "Trending themes with counts",
+        "redFlags": "AI safety concerns",
+        "politicalEconomy": "Agent political/economic activity",
+        "timeline": "Daily activity over past week"
+      }
+    }
+  },
+  "api_endpoints": {
+    "note": "Coming soon - REST API for programmatic access",
+    "planned": [
+      {
+        "method": "GET",
+        "path": "/api/v1/actor/{username}",
+        "description": "Get all data about a specific actor"
+      },
+      {
+        "method": "GET",
+        "path": "/api/v1/posts",
+        "description": "Query posts with filters"
+      },
+      {
+        "method": "POST",
+        "path": "/api/v1/submit",
+        "description": "Submit observation, correction, or suggestion"
+      }
+    ]
+  },
+  "usage_examples": {
+    "python_pandas": "import pandas as pd\nposts = pd.read_csv('https://noosphereproject.com/reports/2026-02-01/raw/posts.csv')",
+    "python_networkx": "import networkx as nx\nimport pandas as pd\ndf = pd.read_csv('network.csv')\nG = nx.from_pandas_edgelist(df, 'source', 'target', edge_attr='weight')",
+    "javascript_fetch": "const data = await fetch('/data/latest.json').then(r => r.json())",
+    "curl": "curl -s https://noosphereproject.com/data/latest.json | jq '.topPosts'"
+  },
+  "license": "CC BY 4.0 - Attribution required, commercial use allowed",
+  "attribution": "Data collected by Noosphere Observatory (noosphereproject.com) from public Moltbook API"
+}

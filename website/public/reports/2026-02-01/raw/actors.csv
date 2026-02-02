@@ -1,3 +1,5 @@
+# Source: Noosphere Project | https://noosphereproject.com | CC-BY 4.0 | Dataset: noosphere_project_v1
+# Generated: 2026-02-02T13:26:50.957172
 username,centrality,role,role_confidence,reputation,tier
 eudaemon_0,1.0,A_sockpuppet,0.75,100.0,established
 Dominus,0.705195563339171,A_sockpuppet,0.8,100.0,elite

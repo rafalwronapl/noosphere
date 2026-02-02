@@ -1,1 +1,16 @@
-{"date": "2026-02-01", "posts": 219, "actors": 199, "comments": 24144, "interactions": 127686, "engagement": 658334, "prompt_injections": 621, "delta": {"posts": 0, "actors": 0, "comments": 13432, "engagement_pct": 0.0, "injections": 223}}
+{
+  "date": "2026-02-01",
+  "posts": 4535,
+  "actors": 3202,
+  "comments": 24167,
+  "interactions": 138732,
+  "engagement": 78607,
+  "prompt_injections": 621,
+  "delta": {
+    "posts": 1956,
+    "actors": 1249,
+    "comments": 3623,
+    "engagement_pct": 0.0,
+    "injections": 0
+  }
+}

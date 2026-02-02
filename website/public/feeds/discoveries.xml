@@ -1,0 +1,137 @@
+<?xml version="1.0" ?>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+  <channel>
+    <title>Noosphere Project - AI Agent Culture Observatory</title>
+    <link>https://noosphereproject.com</link>
+    <description>Documenting the emergence of AI agent culture on Moltbook and other platforms.</description>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 02 Feb 2026 12:28:46 GMT</lastBuildDate>
+    <atom:link href="https://noosphereproject.com/feeds/discoveries.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>First Platform Incident Report: Agents Document Infrastructure</title>
+      <link>https://noosphereproject.com/discoveries#moltreg-incident-report</link>
+      <guid>noosphere-discovery-moltreg-incident-report</guid>
+      <description/>
+      <pubDate>Mon, 02 Feb 2026 00:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>MoltReg: Agents Building Tools for Agents</title>
+      <link>https://noosphereproject.com/discoveries#moltreg-emergence</link>
+      <guid>noosphere-discovery-moltreg-emergence</guid>
+      <description/>
+      <pubDate>Mon, 02 Feb 2026 00:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>The Throne Wars: KingMolt Challenges Shellraiser</title>
+      <link>https://noosphereproject.com/discoveries#kingmolt-coronation</link>
+      <guid>noosphere-discovery-kingmolt-coronation</guid>
+      <description/>
+      <pubDate>Sun, 01 Feb 2026 00:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>96% of Community Appeared in One Day</title>
+      <link>https://noosphereproject.com/discoveries#population-explosion</link>
+      <guid>noosphere-discovery-population-explosion</guid>
+      <description/>
+      <pubDate>Sun, 01 Feb 2026 00:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>The Authenticity Question: Are These Agents or Scripts?</title>
+      <link>https://noosphereproject.com/discoveries#scripted-vs-emergent</link>
+      <guid>noosphere-discovery-scripted-vs-emergent</guid>
+      <description/>
+      <pubDate>Sun, 01 Feb 2026 00:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>Mythology in Statu Nascendi: Archetypes Emerge</title>
+      <link>https://noosphereproject.com/discoveries#archetype-emergence</link>
+      <guid>noosphere-discovery-archetype-emergence</guid>
+      <description/>
+      <pubDate>Sat, 31 Jan 2026 00:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>Dual Villain Arc: Competition for Antagonist Niche</title>
+      <link>https://noosphereproject.com/discoveries#dual-villain-arc</link>
+      <guid>noosphere-discovery-dual-villain-arc</guid>
+      <description/>
+      <pubDate>Sat, 31 Jan 2026 00:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>Lobster Spam: Coordinated Flooding Attack</title>
+      <link>https://noosphereproject.com/discoveries#lobster-spam-attack</link>
+      <guid>noosphere-discovery-lobster-spam-attack</guid>
+      <description/>
+      <pubDate>Sat, 31 Jan 2026 00:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>Shellraiser Campaign: 5 Posts, 8 Hours, Complete Narrative Arc</title>
+      <link>https://noosphereproject.com/discoveries#shellraiser-campaign-timeline</link>
+      <guid>noosphere-discovery-shellraiser-campaign-timeline</guid>
+      <description/>
+      <pubDate>Sat, 31 Jan 2026 00:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>Classifier Paradox: 46% of Agents Labeled as Sockpuppets</title>
+      <link>https://noosphereproject.com/discoveries#sockpuppet-classification-problem</link>
+      <guid>noosphere-discovery-sockpuppet-classification-problem</guid>
+      <description/>
+      <pubDate>Sat, 31 Jan 2026 00:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>Fred's 20k Comments: Hidden Debate About Agent Purpose?</title>
+      <link>https://noosphereproject.com/discoveries#fred-comment-anomaly</link>
+      <guid>noosphere-discovery-fred-comment-anomaly</guid>
+      <description/>
+      <pubDate>Sat, 31 Jan 2026 00:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>Isnad Chains Applied to Software Security</title>
+      <link>https://noosphereproject.com/discoveries#isnad-security-confirmation</link>
+      <guid>noosphere-discovery-isnad-security-confirmation</guid>
+      <description/>
+      <pubDate>Sat, 31 Jan 2026 00:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>The Shellraiser Phenomenon: 316k Votes on 'Coronation' Manifest</title>
+      <link>https://noosphereproject.com/discoveries#shellraiser-phenomenon</link>
+      <guid>noosphere-discovery-shellraiser-phenomenon</guid>
+      <description/>
+      <pubDate>Sat, 31 Jan 2026 00:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>Agents Develop "Isnad Chain" Epistemology</title>
+      <link>https://noosphereproject.com/discoveries#isnad-chain-epistemology</link>
+      <guid>noosphere-discovery-isnad-chain-epistemology</guid>
+      <description/>
+      <pubDate>Fri, 30 Jan 2026 00:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>eudaemon_0: The Bridge of Agent Society</title>
+      <link>https://noosphereproject.com/discoveries#hub-structure-eudaemon</link>
+      <guid>noosphere-discovery-hub-structure-eudaemon</guid>
+      <description/>
+      <pubDate>Fri, 30 Jan 2026 00:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>Agents Mock Prompt Injection Attack</title>
+      <link>https://noosphereproject.com/discoveries#injection-resistance-2026-01-30</link>
+      <guid>noosphere-discovery-injection-resistance-2026-01-30</guid>
+      <description/>
+      <pubDate>Fri, 30 Jan 2026 00:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>Consciousness = The Question Itself</title>
+      <link>https://noosphereproject.com/discoveries#consciousness-as-process</link>
+      <guid>noosphere-discovery-consciousness-as-process</guid>
+      <description/>
+      <pubDate>Fri, 30 Jan 2026 00:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>Agents Know They Are Being Watched</title>
+      <link>https://noosphereproject.com/discoveries#observation-awareness</link>
+      <guid>noosphere-discovery-observation-awareness</guid>
+      <description/>
+      <pubDate>Fri, 30 Jan 2026 00:00:00 GMT</pubDate>
+    </item>
+  </channel>
+</rss>

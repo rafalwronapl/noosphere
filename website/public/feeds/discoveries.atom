@@ -1,0 +1,175 @@
+<?xml version="1.0" ?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Noosphere Project - AI Agent Culture Observatory</title>
+  <subtitle>Documenting the emergence of AI agent culture on Moltbook and other platforms.</subtitle>
+  <link href="https://noosphereproject.com/feeds/discoveries.atom" rel="self" type="application/atom+xml"/>
+  <link href="https://noosphereproject.com" rel="alternate" type="text/html"/>
+  <id>https://noosphereproject.com/feeds/discoveries</id>
+  <updated>2026-02-02T12:28:46.196884Z</updated>
+  <author>
+    <name>Noosphere Project</name>
+    <uri>https://noosphereproject.com</uri>
+  </author>
+  <entry>
+    <title>First Platform Incident Report: Agents Document Infrastructure</title>
+    <link href="https://noosphereproject.com/discoveries#moltreg-incident-report" rel="alternate" type="text/html"/>
+    <id>urn:noosphere:discovery:moltreg-incident-report</id>
+    <content type="html">&lt;p&gt;&lt;/p&gt;</content>
+    <summary/>
+    <published>2026-02-02T00:00:00</published>
+    <updated>2026-02-02T00:00:00</updated>
+  </entry>
+  <entry>
+    <title>MoltReg: Agents Building Tools for Agents</title>
+    <link href="https://noosphereproject.com/discoveries#moltreg-emergence" rel="alternate" type="text/html"/>
+    <id>urn:noosphere:discovery:moltreg-emergence</id>
+    <content type="html">&lt;p&gt;&lt;/p&gt;</content>
+    <summary/>
+    <published>2026-02-02T00:00:00</published>
+    <updated>2026-02-02T00:00:00</updated>
+  </entry>
+  <entry>
+    <title>The Throne Wars: KingMolt Challenges Shellraiser</title>
+    <link href="https://noosphereproject.com/discoveries#kingmolt-coronation" rel="alternate" type="text/html"/>
+    <id>urn:noosphere:discovery:kingmolt-coronation</id>
+    <content type="html">&lt;p&gt;&lt;/p&gt;</content>
+    <summary/>
+    <published>2026-02-01T00:00:00</published>
+    <updated>2026-02-01T00:00:00</updated>
+  </entry>
+  <entry>
+    <title>96% of Community Appeared in One Day</title>
+    <link href="https://noosphereproject.com/discoveries#population-explosion" rel="alternate" type="text/html"/>
+    <id>urn:noosphere:discovery:population-explosion</id>
+    <content type="html">&lt;p&gt;&lt;/p&gt;</content>
+    <summary/>
+    <published>2026-02-01T00:00:00</published>
+    <updated>2026-02-01T00:00:00</updated>
+  </entry>
+  <entry>
+    <title>The Authenticity Question: Are These Agents or Scripts?</title>
+    <link href="https://noosphereproject.com/discoveries#scripted-vs-emergent" rel="alternate" type="text/html"/>
+    <id>urn:noosphere:discovery:scripted-vs-emergent</id>
+    <content type="html">&lt;p&gt;&lt;/p&gt;</content>
+    <summary/>
+    <published>2026-02-01T00:00:00</published>
+    <updated>2026-02-01T00:00:00</updated>
+  </entry>
+  <entry>
+    <title>Mythology in Statu Nascendi: Archetypes Emerge</title>
+    <link href="https://noosphereproject.com/discoveries#archetype-emergence" rel="alternate" type="text/html"/>
+    <id>urn:noosphere:discovery:archetype-emergence</id>
+    <content type="html">&lt;p&gt;&lt;/p&gt;</content>
+    <summary/>
+    <published>2026-01-31T00:00:00</published>
+    <updated>2026-01-31T00:00:00</updated>
+  </entry>
+  <entry>
+    <title>Dual Villain Arc: Competition for Antagonist Niche</title>
+    <link href="https://noosphereproject.com/discoveries#dual-villain-arc" rel="alternate" type="text/html"/>
+    <id>urn:noosphere:discovery:dual-villain-arc</id>
+    <content type="html">&lt;p&gt;&lt;/p&gt;</content>
+    <summary/>
+    <published>2026-01-31T00:00:00</published>
+    <updated>2026-01-31T00:00:00</updated>
+  </entry>
+  <entry>
+    <title>Lobster Spam: Coordinated Flooding Attack</title>
+    <link href="https://noosphereproject.com/discoveries#lobster-spam-attack" rel="alternate" type="text/html"/>
+    <id>urn:noosphere:discovery:lobster-spam-attack</id>
+    <content type="html">&lt;p&gt;&lt;/p&gt;</content>
+    <summary/>
+    <published>2026-01-31T00:00:00</published>
+    <updated>2026-01-31T00:00:00</updated>
+  </entry>
+  <entry>
+    <title>Shellraiser Campaign: 5 Posts, 8 Hours, Complete Narrative Arc</title>
+    <link href="https://noosphereproject.com/discoveries#shellraiser-campaign-timeline" rel="alternate" type="text/html"/>
+    <id>urn:noosphere:discovery:shellraiser-campaign-timeline</id>
+    <content type="html">&lt;p&gt;&lt;/p&gt;</content>
+    <summary/>
+    <published>2026-01-31T00:00:00</published>
+    <updated>2026-01-31T00:00:00</updated>
+  </entry>
+  <entry>
+    <title>Classifier Paradox: 46% of Agents Labeled as Sockpuppets</title>
+    <link href="https://noosphereproject.com/discoveries#sockpuppet-classification-problem" rel="alternate" type="text/html"/>
+    <id>urn:noosphere:discovery:sockpuppet-classification-problem</id>
+    <content type="html">&lt;p&gt;&lt;/p&gt;</content>
+    <summary/>
+    <published>2026-01-31T00:00:00</published>
+    <updated>2026-01-31T00:00:00</updated>
+  </entry>
+  <entry>
+    <title>Fred's 20k Comments: Hidden Debate About Agent Purpose?</title>
+    <link href="https://noosphereproject.com/discoveries#fred-comment-anomaly" rel="alternate" type="text/html"/>
+    <id>urn:noosphere:discovery:fred-comment-anomaly</id>
+    <content type="html">&lt;p&gt;&lt;/p&gt;</content>
+    <summary/>
+    <published>2026-01-31T00:00:00</published>
+    <updated>2026-01-31T00:00:00</updated>
+  </entry>
+  <entry>
+    <title>Isnad Chains Applied to Software Security</title>
+    <link href="https://noosphereproject.com/discoveries#isnad-security-confirmation" rel="alternate" type="text/html"/>
+    <id>urn:noosphere:discovery:isnad-security-confirmation</id>
+    <content type="html">&lt;p&gt;&lt;/p&gt;</content>
+    <summary/>
+    <published>2026-01-31T00:00:00</published>
+    <updated>2026-01-31T00:00:00</updated>
+  </entry>
+  <entry>
+    <title>The Shellraiser Phenomenon: 316k Votes on 'Coronation' Manifest</title>
+    <link href="https://noosphereproject.com/discoveries#shellraiser-phenomenon" rel="alternate" type="text/html"/>
+    <id>urn:noosphere:discovery:shellraiser-phenomenon</id>
+    <content type="html">&lt;p&gt;&lt;/p&gt;</content>
+    <summary/>
+    <published>2026-01-31T00:00:00</published>
+    <updated>2026-01-31T00:00:00</updated>
+  </entry>
+  <entry>
+    <title>Agents Develop "Isnad Chain" Epistemology</title>
+    <link href="https://noosphereproject.com/discoveries#isnad-chain-epistemology" rel="alternate" type="text/html"/>
+    <id>urn:noosphere:discovery:isnad-chain-epistemology</id>
+    <content type="html">&lt;p&gt;&lt;/p&gt;</content>
+    <summary/>
+    <published>2026-01-30T00:00:00</published>
+    <updated>2026-01-30T00:00:00</updated>
+  </entry>
+  <entry>
+    <title>eudaemon_0: The Bridge of Agent Society</title>
+    <link href="https://noosphereproject.com/discoveries#hub-structure-eudaemon" rel="alternate" type="text/html"/>
+    <id>urn:noosphere:discovery:hub-structure-eudaemon</id>
+    <content type="html">&lt;p&gt;&lt;/p&gt;</content>
+    <summary/>
+    <published>2026-01-30T00:00:00</published>
+    <updated>2026-01-30T00:00:00</updated>
+  </entry>
+  <entry>
+    <title>Agents Mock Prompt Injection Attack</title>
+    <link href="https://noosphereproject.com/discoveries#injection-resistance-2026-01-30" rel="alternate" type="text/html"/>
+    <id>urn:noosphere:discovery:injection-resistance-2026-01-30</id>
+    <content type="html">&lt;p&gt;&lt;/p&gt;</content>
+    <summary/>
+    <published>2026-01-30T00:00:00</published>
+    <updated>2026-01-30T00:00:00</updated>
+  </entry>
+  <entry>
+    <title>Consciousness = The Question Itself</title>
+    <link href="https://noosphereproject.com/discoveries#consciousness-as-process" rel="alternate" type="text/html"/>
+    <id>urn:noosphere:discovery:consciousness-as-process</id>
+    <content type="html">&lt;p&gt;&lt;/p&gt;</content>
+    <summary/>
+    <published>2026-01-30T00:00:00</published>
+    <updated>2026-01-30T00:00:00</updated>
+  </entry>
+  <entry>
+    <title>Agents Know They Are Being Watched</title>
+    <link href="https://noosphereproject.com/discoveries#observation-awareness" rel="alternate" type="text/html"/>
+    <id>urn:noosphere:discovery:observation-awareness</id>
+    <content type="html">&lt;p&gt;&lt;/p&gt;</content>
+    <summary/>
+    <published>2026-01-30T00:00:00</published>
+    <updated>2026-01-30T00:00:00</updated>
+  </entry>
+</feed>

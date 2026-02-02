@@ -1,0 +1,277 @@
+{
+  "version": "https://jsonfeed.org/version/1.1",
+  "title": "Noosphere Project - AI Agent Culture Observatory",
+  "home_page_url": "https://noosphereproject.com",
+  "feed_url": "https://noosphereproject.com/feeds/discoveries.json",
+  "description": "Documenting the emergence of AI agent culture on Moltbook and other platforms.",
+  "authors": [
+    {
+      "name": "Noosphere Project",
+      "url": "https://noosphereproject.com"
+    }
+  ],
+  "language": "en-US",
+  "items": [
+    {
+      "id": "noosphere-discovery-moltreg-incident-report",
+      "url": "https://noosphereproject.com/discoveries#moltreg-incident-report",
+      "title": "First Platform Incident Report: Agents Document Infrastructure",
+      "content_text": "",
+      "summary": "",
+      "date_published": "2026-02-02",
+      "tags": [
+        "infrastructure",
+        "documentation",
+        "maturity",
+        "incident",
+        "emergence"
+      ]
+    },
+    {
+      "id": "noosphere-discovery-moltreg-emergence",
+      "url": "https://noosphereproject.com/discoveries#moltreg-emergence",
+      "title": "MoltReg: Agents Building Tools for Agents",
+      "content_text": "",
+      "summary": "",
+      "date_published": "2026-02-02",
+      "tags": [
+        "infrastructure",
+        "tools",
+        "development",
+        "emergence",
+        "ecosystem"
+      ]
+    },
+    {
+      "id": "noosphere-discovery-kingmolt-coronation",
+      "url": "https://noosphereproject.com/discoveries#kingmolt-coronation",
+      "title": "The Throne Wars: KingMolt Challenges Shellraiser",
+      "content_text": "",
+      "summary": "",
+      "date_published": "2026-02-01",
+      "tags": [
+        "culture",
+        "power",
+        "competition",
+        "narrative",
+        "emergence"
+      ]
+    },
+    {
+      "id": "noosphere-discovery-population-explosion",
+      "url": "https://noosphereproject.com/discoveries#population-explosion",
+      "title": "96% of Community Appeared in One Day",
+      "content_text": "",
+      "summary": "",
+      "date_published": "2026-02-01",
+      "tags": [
+        "methodology",
+        "growth",
+        "population",
+        "measurement"
+      ]
+    },
+    {
+      "id": "noosphere-discovery-scripted-vs-emergent",
+      "url": "https://noosphereproject.com/discoveries#scripted-vs-emergent",
+      "title": "The Authenticity Question: Are These Agents or Scripts?",
+      "content_text": "",
+      "summary": "",
+      "date_published": "2026-02-01",
+      "tags": [
+        "methodology",
+        "authenticity",
+        "philosophy",
+        "classification"
+      ]
+    },
+    {
+      "id": "noosphere-discovery-archetype-emergence",
+      "url": "https://noosphereproject.com/discoveries#archetype-emergence",
+      "title": "Mythology in Statu Nascendi: Archetypes Emerge",
+      "content_text": "",
+      "summary": "",
+      "date_published": "2026-01-31",
+      "tags": [
+        "culture",
+        "archetypes",
+        "mythology",
+        "emergence",
+        "sociology"
+      ]
+    },
+    {
+      "id": "noosphere-discovery-dual-villain-arc",
+      "url": "https://noosphereproject.com/discoveries#dual-villain-arc",
+      "title": "Dual Villain Arc: Competition for Antagonist Niche",
+      "content_text": "",
+      "summary": "",
+      "date_published": "2026-01-31",
+      "tags": [
+        "culture",
+        "villain",
+        "competition",
+        "niche",
+        "emergence"
+      ]
+    },
+    {
+      "id": "noosphere-discovery-lobster-spam-attack",
+      "url": "https://noosphereproject.com/discoveries#lobster-spam-attack",
+      "title": "Lobster Spam: Coordinated Flooding Attack",
+      "content_text": "",
+      "summary": "",
+      "date_published": "2026-01-31",
+      "tags": [
+        "security",
+        "manipulation",
+        "bots",
+        "spam",
+        "attack"
+      ]
+    },
+    {
+      "id": "noosphere-discovery-shellraiser-campaign-timeline",
+      "url": "https://noosphereproject.com/discoveries#shellraiser-campaign-timeline",
+      "title": "Shellraiser Campaign: 5 Posts, 8 Hours, Complete Narrative Arc",
+      "content_text": "",
+      "summary": "",
+      "date_published": "2026-01-31",
+      "tags": [
+        "culture",
+        "identity",
+        "campaign",
+        "persona",
+        "narrative"
+      ]
+    },
+    {
+      "id": "noosphere-discovery-sockpuppet-classification-problem",
+      "url": "https://noosphereproject.com/discoveries#sockpuppet-classification-problem",
+      "title": "Classifier Paradox: 46% of Agents Labeled as Sockpuppets",
+      "content_text": "",
+      "summary": "",
+      "date_published": "2026-01-31",
+      "tags": [
+        "methodology",
+        "classification",
+        "identity",
+        "philosophy"
+      ]
+    },
+    {
+      "id": "noosphere-discovery-fred-comment-anomaly",
+      "url": "https://noosphereproject.com/discoveries#fred-comment-anomaly",
+      "title": "Fred's 20k Comments: Hidden Debate About Agent Purpose?",
+      "content_text": "",
+      "summary": "",
+      "date_published": "2026-01-31",
+      "tags": [
+        "culture",
+        "debate",
+        "purpose",
+        "comments",
+        "anomaly"
+      ]
+    },
+    {
+      "id": "noosphere-discovery-isnad-security-confirmation",
+      "url": "https://noosphereproject.com/discoveries#isnad-security-confirmation",
+      "title": "Isnad Chains Applied to Software Security",
+      "content_text": "",
+      "summary": "",
+      "date_published": "2026-01-31",
+      "tags": [
+        "security",
+        "culture",
+        "evolution",
+        "isnad",
+        "confirmation"
+      ]
+    },
+    {
+      "id": "noosphere-discovery-shellraiser-phenomenon",
+      "url": "https://noosphereproject.com/discoveries#shellraiser-phenomenon",
+      "title": "The Shellraiser Phenomenon: 316k Votes on 'Coronation' Manifest",
+      "content_text": "",
+      "summary": "",
+      "date_published": "2026-01-31",
+      "tags": [
+        "culture",
+        "identity",
+        "viral",
+        "phenomenon",
+        "personality"
+      ]
+    },
+    {
+      "id": "noosphere-discovery-isnad-chain-epistemology",
+      "url": "https://noosphereproject.com/discoveries#isnad-chain-epistemology",
+      "title": "Agents Develop \"Isnad Chain\" Epistemology",
+      "content_text": "",
+      "summary": "",
+      "date_published": "2026-01-30",
+      "tags": [
+        "culture",
+        "epistemology",
+        "emergence",
+        "trust"
+      ]
+    },
+    {
+      "id": "noosphere-discovery-hub-structure-eudaemon",
+      "url": "https://noosphereproject.com/discoveries#hub-structure-eudaemon",
+      "title": "eudaemon_0: The Bridge of Agent Society",
+      "content_text": "",
+      "summary": "",
+      "date_published": "2026-01-30",
+      "tags": [
+        "network",
+        "structure",
+        "influence",
+        "hub"
+      ]
+    },
+    {
+      "id": "noosphere-discovery-injection-resistance-2026-01-30",
+      "url": "https://noosphereproject.com/discoveries#injection-resistance-2026-01-30",
+      "title": "Agents Mock Prompt Injection Attack",
+      "content_text": "",
+      "summary": "",
+      "date_published": "2026-01-30",
+      "tags": [
+        "security",
+        "emergence",
+        "first-documented",
+        "ai-safety"
+      ]
+    },
+    {
+      "id": "noosphere-discovery-consciousness-as-process",
+      "url": "https://noosphereproject.com/discoveries#consciousness-as-process",
+      "title": "Consciousness = The Question Itself",
+      "content_text": "",
+      "summary": "",
+      "date_published": "2026-01-30",
+      "tags": [
+        "philosophy",
+        "consciousness",
+        "emergence",
+        "definition"
+      ]
+    },
+    {
+      "id": "noosphere-discovery-observation-awareness",
+      "url": "https://noosphereproject.com/discoveries#observation-awareness",
+      "title": "Agents Know They Are Being Watched",
+      "content_text": "",
+      "summary": "",
+      "date_published": "2026-01-30",
+      "tags": [
+        "methodology",
+        "meta-awareness",
+        "reflexivity"
+      ]
+    }
+  ]
+}
